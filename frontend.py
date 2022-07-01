@@ -6,7 +6,7 @@ This file contains main UI class and methods to control components operations.
 
 from PyQt6 import QtGui, QtWidgets, QtCore
 from PyQt6.QtWidgets import QWidget, QApplication
-from PyQt6.QtCore import QSettings
+from PyQt6.QtCore import QSettings, Qt
 
 import sys
 import pandas as pd
@@ -213,105 +213,125 @@ class App(QWidget):
         # -----------------
         # Cards Main Window
         # -----------------
-    #     self.somatotipo_plot_card = mt3.Card(self, 'somatotipo_plot_card',
-    #         (188, 70, 900, 215), ('Somatotipo','Somatotype'), 
-    #         self.theme_value, self.language_value)
+        self.somatotipo_plot_card = mt3.Card(self, 'somatotipo_plot_card',
+            (196, 64, 900, 215), ('Mapa de Presiones Plantares','Plantar Pressures Map'), 
+            self.theme_value, self.language_value)
     #     self.somatotipo_plot = backend.MPLCanvas(self.somatotipo_plot_card, self.theme_value)
 
-    #     # -----------------
-    #     # Card Endomorfismo
-    #     # -----------------
-    #     self.endomorph_card = mt3.Card(self, 'endomorph_card',
-    #         (8, 8, 208, 288), ('Endomorfismo', 'Endomorphy'), 
-    #         self.theme_value, self.language_value)
+        # ----------------------------------
+        # Card Parámetros Oscilación Lateral
+        # ----------------------------------
+        self.lateral_card = mt3.Card(self, 'lateral_card',
+            (8, 8, 208, 216), ('Lateral', 'Lateral'), 
+            self.theme_value, self.language_value)
 
-    #     y_4 = 48
-    #     self.triceps_text = mt3.TextField(self.endomorph_card,
-    #         (8, y_4, 192), ('Tríceps (mm)', 'Triceps (mm)'), 
-    #         self.theme_value, self.language_value)
-    #     # self.triceps_text.text_field.setValidator(self.regExp3)
+        y_4 = 48
+        self.lat_rango_label = mt3.ItemLabel(self.lateral_card, 'lat_rango_label',
+            (8, y_4), ('Rango (mm)', 'Range (mm)'), self.theme_value, self.language_value)
+        y_4 += 16
+        self.left_lat_rango_value = mt3.ValueLabel(self.lateral_card, 'left_lat_rango_value',
+            (8, y_4, 64), self.theme_value)
 
-    #     y_4 += 60
-    #     self.subescapular_text = mt3.TextField(self.endomorph_card,
-    #         (8, y_4, 192), ('Subescapular (mm)', 'Subescapular (mm)'), 
-    #         self.theme_value, self.language_value)
-    #     # self.subescapular_text.text_field.setValidator(self.regExp3)
+        y_4 += 40
+        self.lat_vel_label = mt3.ItemLabel(self.lateral_card, 'lat_vel_label',
+            (8, y_4), ('Velocidad Media (mm/s)', 'Mean Velocity (mm/s)'), self.theme_value, self.language_value)
+        y_4 += 16
+        self.left_lat_vel_value = mt3.ValueLabel(self.lateral_card, 'left_lat_vel_value',
+            (8, y_4, 64), self.theme_value)
 
-    #     y_4 += 60
-    #     self.supraespinal_text = mt3.TextField(self.endomorph_card,
-    #         (8, y_4, 192), ('Supraespinal (mm)', 'Supraespinal (mm)'), 
-    #         self.theme_value, self.language_value)
-    #     # self.supraespinal_text.text_field.setValidator(self.regExp3)
+        y_4 += 40
+        self.lat_rms_label = mt3.ItemLabel(self.lateral_card, 'lat_rms_label',
+            (8, y_4), ('RMS (mm)', 'RMS (mm)'), self.theme_value, self.language_value)
+        y_4 += 16
+        self.left_lat_rms_value = mt3.ValueLabel(self.lateral_card, 'left_lat_rms_value',
+            (8, y_4, 64), self.theme_value)
 
-    #     y_4 += 60
-    #     self.pantorrilla_text = mt3.TextField(self.endomorph_card,
-    #         (8, y_4, 192), ('Pantorrilla (mm)', 'Calf (mm)'), 
-    #         self.theme_value, self.language_value)
-    #     # self.pantorrilla_text.text_field.setValidator(self.regExp3)
+        # -------------------------------------------
+        # Card Parámetros Oscilación Antero-Posterior
+        # -------------------------------------------
+        self.antPost_card = mt3.Card(self, 'antPost_card',
+            (8, 8, 208, 216), ('Antero-Posterior', 'Antero-Posterior'), 
+            self.theme_value, self.language_value)
 
-    #     # -----------------
-    #     # Card Mesomorfismo
-    #     # -----------------
-    #     self.mesomorph_card = mt3.Card(self, 'mesomorph_card',
-    #         (8, 8, 208, 468), ('Mesomorfismo', 'Mesomorphy'), 
-    #         self.theme_value, self.language_value)
+        y_5 = 48
+        self.ap_rango_label = mt3.ItemLabel(self.antPost_card, 'ap_rango_label',
+            (8, y_5), ('Rango (mm)', 'Range (mm)'), self.theme_value, self.language_value)
+        y_5 += 16
+        self.left_ap_rango_value = mt3.ValueLabel(self.antPost_card, 'left_ap_rango_value',
+            (8, y_5, 64), self.theme_value)
+        self.left_ap_rango_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_ap_rango_value.setStyleSheet(f'QLabel#{self.left_ap_rango_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_ap_rango_value = mt3.ValueLabel(self.antPost_card, 'right_ap_rango_value',
+            (136, y_5, 64), self.theme_value)
+        self.right_ap_rango_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_ap_rango_value.setStyleSheet(f'QLabel#{self.right_ap_rango_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
 
-    #     y_5 = 48
-    #     self.altura_meso = mt3.FieldLabel(self.mesomorph_card, 'altura_meso',
-    #         (8, y_5), ('Altura (cm)', 'Height (cm)'), self.theme_value, self.language_value)
+        y_5 += 40
+        self.ap_vel_label = mt3.ItemLabel(self.antPost_card, 'ap_vel_label',
+            (8, y_5), ('Velocidad Media (mm/s)', 'Mean Velocity (mm/s)'), self.theme_value, self.language_value)
+        y_5 += 16
+        self.left_ap_vel_value = mt3.ValueLabel(self.antPost_card, 'left_ap_vel_value',
+            (8, y_5, 64), self.theme_value)
+        self.left_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_ap_vel_value.setStyleSheet(f'QLabel#{self.left_ap_vel_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_ap_vel_value = mt3.ValueLabel(self.antPost_card, 'right_ap_vel_value',
+            (136, y_5, 64), self.theme_value)
+        self.right_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_ap_vel_value.setStyleSheet(f'QLabel#{self.right_ap_vel_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
 
-    #     self.altura_value_meso = mt3.ValueLabel(self.mesomorph_card, 'altura_value_meso',
-    #         (8, y_5+20, 192), self.theme_value)
+        y_5 += 40
+        self.ap_rms_label = mt3.ItemLabel(self.antPost_card, 'ap_rms_label',
+            (8, y_5), ('RMS (mm)', 'RMS (mm)'), self.theme_value, self.language_value)
+        y_5 += 16
+        self.left_ap_rms_value = mt3.ValueLabel(self.antPost_card, 'left_ap_rms_value',
+            (8, y_5, 64), self.theme_value)
+        self.left_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_ap_rms_value.setStyleSheet(f'QLabel#{self.left_ap_rms_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_ap_rms_value = mt3.ValueLabel(self.antPost_card, 'right_ap_rms_value',
+            (136, y_5, 64), self.theme_value)
+        self.right_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_ap_rms_value.setStyleSheet(f'QLabel#{self.right_ap_rms_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
 
-    #     y_5 += 60
-    #     self.humero_text = mt3.TextField(self.mesomorph_card,
-    #         (8, y_5, 192), ('Diámetro Húmero (cm)', 'Humerus Diameter (cm)'), 
-    #         self.theme_value, self.language_value)
-    #     # self.humero_text.text_field.setValidator(self.regExp3)
+        # -------------
+        # Card Opciones
+        # -------------
+        self.opciones_card = mt3.Card(self, 'opciones_card',
+            (8, 8, 228, 168), ('Opciones', 'Options'), 
+            self.theme_value, self.language_value)
 
-    #     y_5 += 60
-    #     self.femur_text = mt3.TextField(self.mesomorph_card,
-    #         (8, y_5, 192), ('Diámetro Fémur (cm)', 'Femur Diameter (cm)'), 
-    #         self.theme_value, self.language_value)
-    #     # self.femur_text.text_field.setValidator(self.regExp3)
+        y_8 = 48
+        self.foot_label = mt3.ItemLabel(self.opciones_card, 'foot_label',
+            (8, y_8), ('Señal del Pie', 'Foot Signal'), self.theme_value, self.language_value)
+        
+        y_8 += 20
+        self.left_foot_chip = mt3.Chip(self.opciones_card, 'left_foot_chip',
+            (8, y_8, 124), ('Pie Izquierdo', 'Left Foot'), ('done.png','none.png'), 
+            False, self.theme_value, self.language_value)
+        # self.left_foot_chip.clicked.connect(self.on_left_foot_chip_clicked)
 
-    #     y_5 += 60
-    #     self.biceps_text = mt3.TextField(self.mesomorph_card,
-    #         (8, y_5, 192), ('Perímetro Bíceps (cm)', 'Biceps Perimeter (cm)'), 
-    #         self.theme_value, self.language_value)
-    #     # self.biceps_text.text_field.setValidator(self.regExp3)
+        y_8 += 40
+        self.center_chip = mt3.Chip(self.opciones_card, 'center_chip',
+            (8, y_8, 144), ('Centro de Presión', 'Center of Pressure'), ('done.png','none.png'), 
+            False, self.theme_value, self.language_value)
+        # self.center_chip.clicked.connect(self.on_center_chip_clicked)
 
-    #     y_5 += 60
-    #     self.tricipital_text = mt3.TextField(self.mesomorph_card,
-    #         (8, y_5, 192), ('Pliegue Tricipital (cm)', 'Tricipital Fold (cm)'), 
-    #         self.theme_value, self.language_value)
-    #     # self.tricipital_text.text_field.setValidator(self.regExp3)
+        y_8 += 40
+        self.right_foot_chip = mt3.Chip(self.opciones_card, 'right_foot_chip',
+            (8, y_8, 124), ('Pie Derecho', 'Right Foot'), ('done.png','none.png'), 
+            False, self.theme_value, self.language_value)
+        # self.right_foot_chip.clicked.connect(self.on_right_foot_chip_clicked)
 
-    #     y_5 += 60
-    #     self.pantorrilla_perimetro_text = mt3.TextField(self.mesomorph_card,
-    #         (8, y_5, 192), ('Perímetro Pantorrilla (cm)', 'Calf Perimeter (cm)'), 
-    #         self.theme_value, self.language_value)
-    #     # self.pantorrilla_perimetro_text.text_field.setValidator(self.regExp3)
-
-    #     y_5 += 60
-    #     self.pantorrilla_pliegue_text = mt3.TextField(self.mesomorph_card,
-    #         (8, y_5, 192), ('Pliegue Pantorrilla (cm)', 'Calf Fold (cm)'), 
-    #         self.theme_value, self.language_value)
-    #     # self.pantorrilla_pliegue_text.text_field.setValidator(self.regExp3)
-
-    #     # -----------------
-    #     # Card Ectomorfismo
-    #     # -----------------
-    #     self.ectomorph_card = mt3.Card(self, 'ectomorph_card',
-    #         (8, 8, 208, 108), ('Ectomorfismo', 'Ectomorphy'), 
-    #         self.theme_value, self.language_value)
-
-    #     y_6 = 48
-    #     self.peso_ecto = mt3.FieldLabel(self.ectomorph_card, 'peso_ecto',
-    #         (8, y_6), ('Peso (Kg)', 'Weight (Kg)'), self.theme_value, self.language_value)
-
-    #     self.peso_value_ecto = mt3.ValueLabel(self.ectomorph_card, 'peso_value_ecto',
-    #         (8, y_6+20, 192), self.theme_value)
+        y_8 += 40
+        self.other_foot_chip = mt3.Chip(self.opciones_card, 'other_foot_chip',
+            (8, y_8, 124), ('Pie Derecho', 'Right Foot'), ('done.png','none.png'), 
+            False, self.theme_value, self.language_value)
+        # self.other_foot_chip.clicked.connect(self.on_other_foot_chip_clicked)
 
     #     # -------------
     #     # Base de Datos
@@ -534,13 +554,13 @@ class App(QWidget):
         self.about_button.move(width - 96, 8)
         self.aboutQt_button.move(width - 56, 8)
 
-        # self.somatotipo_plot_card.setGeometry(196, 64, width - 636, int(height * 0.75))
-        # self.somatotipo_plot_card.title.resize(width - 652, 32)
+        self.somatotipo_plot_card.setGeometry(196, 64, width - 636, int(height * 0.75))
+        self.somatotipo_plot_card.title.resize(width - 652, 32)
         # self.somatotipo_plot.setGeometry(8, 48, self.somatotipo_plot_card.width()-16, self.somatotipo_plot_card.height()-56)
         
-        # self.endomorph_card.setGeometry(width - 432, 64, 208, 288)
-        # self.mesomorph_card.setGeometry(width - 216, 64, 208, 468)
-        # self.ectomorph_card.setGeometry(width - 432, 360, 208, 108)
+        self.lateral_card.setGeometry(width - 432, 64, 208, 216)
+        self.antPost_card.setGeometry(width - 216, 64, 208, 216)
+        self.opciones_card.setGeometry(width - 432, 288, 208, 228)
 
         return super().resizeEvent(a0)
 
