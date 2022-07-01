@@ -84,12 +84,12 @@ class App(QWidget):
         self.idioma_menu = mt3.Menu(self.titulo_card, 'idioma_menu',
             (8, 8, 72), 2, 2, self.idioma_dict, self.theme_value, self.language_value)
         self.idioma_menu.setCurrentIndex(self.language_value)
-        # self.idioma_menu.currentIndexChanged.connect(self.on_idioma_menu_currentIndexChanged)
+        self.idioma_menu.currentIndexChanged.connect(self.on_idioma_menu_currentIndexChanged)
         
         self.tema_switch = mt3.Switch(self.titulo_card, 'tema_switch',
             (8, 8, 48), ('', ''), ('light_mode.png','dark_mode.png'), 
             self.theme_value, self.theme_value, self.language_value)
-        # self.tema_switch.clicked.connect(self.on_tema_switch_clicked)
+        self.tema_switch.clicked.connect(self.on_tema_switch_clicked)
 
         self.database_button = mt3.IconButton(self.titulo_card, 'database_button',
             (8, 8), 'database.png', self.theme_value)
@@ -334,108 +334,108 @@ class App(QWidget):
     #         elif self.language_value == 1:
     #             QtWidgets.QMessageBox.critical(self, 'Database Error', 'Database not configured')
 
-    # # ----------------
-    # # Funciones Título
-    # # ----------------
-    # def on_idioma_menu_currentIndexChanged(self, index: int) -> None:
-    #     """ Language menu control to change components text language
+    # ----------------
+    # Funciones Título
+    # ----------------
+    def on_idioma_menu_currentIndexChanged(self, index: int) -> None:
+        """ Language menu control to change components text language
         
-    #     Parameters
-    #     ----------
-    #     index: int
-    #         Index of language menu control
+        Parameters
+        ----------
+        index: int
+            Index of language menu control
         
-    #     Returns
-    #     -------
-    #     None
-    #     """
-    #     self.idioma_menu.language_text(index)
+        Returns
+        -------
+        None
+        """
+        self.idioma_menu.language_text(index)
         
-    #     self.paciente_card.language_text(index)
-    #     self.analisis_card.language_text(index)
-    #     self.info_card.language_text(index)
+        self.paciente_card.language_text(index)
+        self.analisis_card.language_text(index)
+        self.info_card.language_text(index)
 
-    #     self.somatotipo_plot_card.language_text(index)
+        # self.somatotipo_plot_card.language_text(index)
 
-    #     self.endomorph_card.language_text(index)
-    #     self.triceps_text.language_text(index)
-    #     self.subescapular_text.language_text(index)
-    #     self.supraespinal_text.language_text(index)
-    #     self.pantorrilla_text.language_text(index)
+        # self.endomorph_card.language_text(index)
+        # self.triceps_text.language_text(index)
+        # self.subescapular_text.language_text(index)
+        # self.supraespinal_text.language_text(index)
+        # self.pantorrilla_text.language_text(index)
 
-    #     self.mesomorph_card.language_text(index)
-    #     self.altura_meso.language_text(index)
-    #     self.humero_text.language_text(index)
-    #     self.femur_text.language_text(index)
-    #     self.biceps_text.language_text(index)
-    #     self.tricipital_text.language_text(index)
-    #     self.pantorrilla_perimetro_text.language_text(index)
-    #     self.pantorrilla_pliegue_text.language_text(index)
+        # self.mesomorph_card.language_text(index)
+        # self.altura_meso.language_text(index)
+        # self.humero_text.language_text(index)
+        # self.femur_text.language_text(index)
+        # self.biceps_text.language_text(index)
+        # self.tricipital_text.language_text(index)
+        # self.pantorrilla_perimetro_text.language_text(index)
+        # self.pantorrilla_pliegue_text.language_text(index)
 
-    #     self.ectomorph_card.language_text(index)
-    #     self.peso_ecto.language_text(index)
+        # self.ectomorph_card.language_text(index)
+        # self.peso_ecto.language_text(index)
 
-    #     self.settings.setValue('language', str(index))
-    #     self.language_value = int(self.settings.value('language'))
+        self.settings.setValue('language', str(index))
+        self.language_value = int(self.settings.value('language'))
 
 
-    # def on_tema_switch_clicked(self, state: bool) -> None:
-    #     """ Theme switch control to change components stylesheet
+    def on_tema_switch_clicked(self, state: bool) -> None:
+        """ Theme switch control to change components stylesheet
         
-    #     Parameters
-    #     ----------
-    #     state: bool
-    #         State of theme switch control
+        Parameters
+        ----------
+        state: bool
+            State of theme switch control
         
-    #     Returns
-    #     -------
-    #     None
-    #     """
-    #     if state: self.setStyleSheet('background-color: #E5E9F0; color: #000000')
-    #     else: self.setStyleSheet('background-color: #3B4253; color: #E5E9F0')
+        Returns
+        -------
+        None
+        """
+        if state: self.setStyleSheet('background-color: #E5E9F0; color: #000000')
+        else: self.setStyleSheet('background-color: #3B4253; color: #E5E9F0')
 
-    #     self.titulo_card.apply_styleSheet(state)
-    #     self.idioma_menu.apply_styleSheet(state)
-    #     self.tema_switch.set_state(state)
-    #     self.tema_switch.apply_styleSheet(state)
-    #     self.database_button.apply_styleSheet(state)
-    #     self.manual_button.apply_styleSheet(state)
-    #     self.about_button.apply_styleSheet(state)
-    #     self.aboutQt_button.apply_styleSheet(state)
+        self.titulo_card.apply_styleSheet(state)
+        self.idioma_menu.apply_styleSheet(state)
+        self.tema_switch.set_state(state)
+        self.tema_switch.apply_styleSheet(state)
+        self.database_button.apply_styleSheet(state)
+        self.manual_button.apply_styleSheet(state)
+        self.about_button.apply_styleSheet(state)
+        self.aboutQt_button.apply_styleSheet(state)
 
-    #     self.paciente_card.apply_styleSheet(state)
-    #     self.paciente_add_button.apply_styleSheet(state)
-    #     self.paciente_edit_button.apply_styleSheet(state)
-    #     self.paciente_del_button.apply_styleSheet(state)
-    #     self.pacientes_menu.apply_styleSheet(state)
+        self.paciente_card.apply_styleSheet(state)
+        self.paciente_add_button.apply_styleSheet(state)
+        self.paciente_edit_button.apply_styleSheet(state)
+        self.paciente_del_button.apply_styleSheet(state)
+        self.pacientes_menu.apply_styleSheet(state)
 
-    #     self.analisis_card.apply_styleSheet(state)
-    #     self.analisis_add_button.apply_styleSheet(state)
-    #     self.analisis_del_button.apply_styleSheet(state)
-    #     self.analisis_menu.apply_styleSheet(state)
+        self.analisis_card.apply_styleSheet(state)
+        self.analisis_add_button.apply_styleSheet(state)
+        self.analisis_del_button.apply_styleSheet(state)
+        self.analisis_menu.apply_styleSheet(state)
 
-    #     self.info_card.apply_styleSheet(state)
-    #     self.apellido_value.apply_styleSheet(state)
-    #     self.nombre_value.apply_styleSheet(state)
-    #     self.id_label.apply_styleSheet(state)
-    #     self.id_label.set_icon('id', state)
-    #     self.id_value.apply_styleSheet(state)
-    #     self.fecha_label.apply_styleSheet(state)
-    #     self.fecha_label.set_icon('calendar', state)
-    #     self.fecha_value.apply_styleSheet(state)
-    #     self.sex_label.apply_styleSheet(state)
-    #     self.sex_value.apply_styleSheet(state)
+        self.info_card.apply_styleSheet(state)
+        self.apellido_value.apply_styleSheet(state)
+        self.nombre_value.apply_styleSheet(state)
+        self.id_label.apply_styleSheet(state)
+        self.id_label.set_icon('id', state)
+        self.id_value.apply_styleSheet(state)
+        self.fecha_label.apply_styleSheet(state)
+        self.fecha_label.set_icon('calendar', state)
+        self.fecha_value.apply_styleSheet(state)
+        self.sex_label.apply_styleSheet(state)
+        self.sex_value.apply_styleSheet(state)
         
-    #     if self.sex_value.text() == 'F': self.sex_label.set_icon('woman', state)
-    #     elif self.sex_value.text() == 'M': self.sex_label.set_icon('man', state)
+        if self.sex_value.text() == 'F': self.sex_label.set_icon('woman', state)
+        elif self.sex_value.text() == 'M': self.sex_label.set_icon('man', state)
 
-    #     self.peso_label.apply_styleSheet(state)
-    #     self.peso_label.set_icon('weight', state)
-    #     self.peso_value.apply_styleSheet(state)
-    #     self.altura_label.apply_styleSheet(state)
-    #     self.altura_label.set_icon('height', state)
-    #     self.altura_value.apply_styleSheet(state)
-    #     self.bmi_value.apply_styleSheet(state)
+        self.peso_label.apply_styleSheet(state)
+        self.peso_label.set_icon('weight', state)
+        self.peso_value.apply_styleSheet(state)
+        self.altura_label.apply_styleSheet(state)
+        self.altura_label.set_icon('height', state)
+        self.altura_value.apply_styleSheet(state)
+        self.bmi_value.apply_styleSheet(state)
 
     #     self.somatotipo_plot_card.apply_styleSheet(state)
 
