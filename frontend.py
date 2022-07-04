@@ -213,86 +213,245 @@ class App(QWidget):
         # -----------------
         # Cards Main Window
         # -----------------
-        self.somatotipo_plot_card = mt3.Card(self, 'somatotipo_plot_card',
+        self.presion_plot_card = mt3.Card(self, 'presion_plot_card',
             (196, 64, 900, 215), ('Mapa de Presiones Plantares','Plantar Pressures Map'), 
             self.theme_value, self.language_value)
-    #     self.somatotipo_plot = backend.MPLCanvas(self.somatotipo_plot_card, self.theme_value)
+    #     self.somatotipo_plot = backend.MPLCanvas(self.presion_plot_card, self.theme_value)
 
-        # ----------------------------------
-        # Card Parámetros Oscilación Lateral
-        # ----------------------------------
-        self.lateral_card = mt3.Card(self, 'lateral_card',
-            (8, 8, 208, 216), ('Lateral', 'Lateral'), 
+        # ------------------------
+        # Card Parámetros Globales
+        # ------------------------
+        self.globales_card = mt3.Card(self, 'globales_card',
+            (8, 8, 208, 328), ('Parámetros Globales', 'Global Parameters'), 
             self.theme_value, self.language_value)
 
         y_4 = 48
-        self.lat_rango_label = mt3.ItemLabel(self.lateral_card, 'lat_rango_label',
-            (8, y_4), ('Rango (mm)', 'Range (mm)'), self.theme_value, self.language_value)
+        self.presion_total_label = mt3.ItemLabel(self.globales_card, 'presion_total_label',
+            (8, y_4), ('Presión Total (KPa)', 'Total Pressure (KPa)'), self.theme_value, self.language_value)
         y_4 += 16
-        self.left_lat_rango_value = mt3.ValueLabel(self.lateral_card, 'left_lat_rango_value',
+        self.presion_total_value = mt3.ValueLabel(self.globales_card, 'presion_total_value',
             (8, y_4, 64), self.theme_value)
+        self.presion_total_percent = mt3.ValueLabel(self.globales_card, 'presion_total_percent',
+            (80, y_4, 64), self.theme_value)
 
         y_4 += 40
-        self.lat_vel_label = mt3.ItemLabel(self.lateral_card, 'lat_vel_label',
-            (8, y_4), ('Velocidad Media (mm/s)', 'Mean Velocity (mm/s)'), self.theme_value, self.language_value)
+        self.presion_left_label = mt3.ItemLabel(self.globales_card, 'presion_left_label',
+            (8, y_4), ('Presión Pie Izquierdo (KPa)', 'Left Foot Pressure (KPa)'), self.theme_value, self.language_value)
         y_4 += 16
-        self.left_lat_vel_value = mt3.ValueLabel(self.lateral_card, 'left_lat_vel_value',
+        self.presion_left_value = mt3.ValueLabel(self.globales_card, 'presion_left_value',
             (8, y_4, 64), self.theme_value)
+        self.presion_left_percent = mt3.ValueLabel(self.globales_card, 'presion_left_percent',
+            (80, y_4, 64), self.theme_value)
 
         y_4 += 40
-        self.lat_rms_label = mt3.ItemLabel(self.lateral_card, 'lat_rms_label',
-            (8, y_4), ('RMS (mm)', 'RMS (mm)'), self.theme_value, self.language_value)
+        self.presion_right_label = mt3.ItemLabel(self.globales_card, 'presion_right_label',
+            (8, y_4), ('Presión Pie Derecho (KPa)', 'Right Foot Pressure (KPa)'), self.theme_value, self.language_value)
         y_4 += 16
-        self.left_lat_rms_value = mt3.ValueLabel(self.lateral_card, 'left_lat_rms_value',
+        self.presion_right_value = mt3.ValueLabel(self.globales_card, 'presion_right_value',
             (8, y_4, 64), self.theme_value)
+        self.presion_right_percent = mt3.ValueLabel(self.globales_card, 'presion_right_percent',
+            (80, y_4, 64), self.theme_value)
 
-        # -------------------------------------------
-        # Card Parámetros Oscilación Antero-Posterior
-        # -------------------------------------------
-        self.antPost_card = mt3.Card(self, 'antPost_card',
-            (8, 8, 208, 216), ('Antero-Posterior', 'Antero-Posterior'), 
+        y_4 += 40
+        self.presion_antepie_label = mt3.ItemLabel(self.globales_card, 'presion_antepie_label',
+            (8, y_4), ('Presión Antepié (KPa)', 'Forefoot Pressure (KPa)'), self.theme_value, self.language_value)
+        y_4 += 16
+        self.presion_antepie_value = mt3.ValueLabel(self.globales_card, 'presion_antepie_value',
+            (8, y_4, 64), self.theme_value)
+        self.presion_antepie_percent = mt3.ValueLabel(self.globales_card, 'presion_antepie_percent',
+            (80, y_4, 64), self.theme_value)
+
+        y_4 += 40
+        self.presion_retropie_label = mt3.ItemLabel(self.globales_card, 'presion_retropie_label',
+            (8, y_4), ('Presión Retropié (KPa)', 'Rarefoot Pressure (KPa)'), self.theme_value, self.language_value)
+        y_4 += 16
+        self.presion_retropie_value = mt3.ValueLabel(self.globales_card, 'presion_retropie_value',
+            (8, y_4, 64), self.theme_value)
+        self.presion_retropie_percent = mt3.ValueLabel(self.globales_card, 'presion_retropie_percent',
+            (80, y_4, 64), self.theme_value)
+
+        # ----------------------------
+        # Card Parámetros por Regiones
+        # ----------------------------
+        self.regiones_card = mt3.Card(self, 'regiones_card',
+            (8, 8, 208, 700), ('Antero-Posterior', 'Antero-Posterior'), 
             self.theme_value, self.language_value)
 
         y_5 = 48
-        self.ap_rango_label = mt3.ItemLabel(self.antPost_card, 'ap_rango_label',
-            (8, y_5), ('Rango (mm)', 'Range (mm)'), self.theme_value, self.language_value)
+        self.talon_interno_label = mt3.ItemLabel(self.regiones_card, 'talon_interno_label',
+            (8, y_5), ('Talón Interno (KPa)', 'Inside Keel (KPa)'), self.theme_value, self.language_value)
         y_5 += 16
-        self.left_ap_rango_value = mt3.ValueLabel(self.antPost_card, 'left_ap_rango_value',
+        self.left_talon_interno_value = mt3.ValueLabel(self.regiones_card, 'left_talon_interno_value',
             (8, y_5, 64), self.theme_value)
-        self.left_ap_rango_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.left_ap_rango_value.setStyleSheet(f'QLabel#{self.left_ap_rango_value.name} {{'
+        self.left_talon_interno_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_talon_interno_value.setStyleSheet(f'QLabel#{self.left_talon_interno_value.name} {{'
             f'border: 2px solid #FF0000; border-radius: 16 }}')
-        self.right_ap_rango_value = mt3.ValueLabel(self.antPost_card, 'right_ap_rango_value',
+        self.right_talon_interno_value = mt3.ValueLabel(self.regiones_card, 'right_talon_interno_value',
             (136, y_5, 64), self.theme_value)
-        self.right_ap_rango_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.right_ap_rango_value.setStyleSheet(f'QLabel#{self.right_ap_rango_value.name} {{'
+        self.right_talon_interno_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_talon_interno_value.setStyleSheet(f'QLabel#{self.right_talon_interno_value.name} {{'
             f'border: 2px solid #0000FF; border-radius: 16 }}')
 
         y_5 += 40
-        self.ap_vel_label = mt3.ItemLabel(self.antPost_card, 'ap_vel_label',
+        self.talon_externo_label = mt3.ItemLabel(self.regiones_card, 'talon_externo_label',
+            (8, y_5), ('Talón Externo (KPa)', 'Outside Keel (KPa)'), self.theme_value, self.language_value)
+        y_5 += 16
+        self.left_talon_externo_value = mt3.ValueLabel(self.regiones_card, 'left_talon_externo_value',
+            (8, y_5, 64), self.theme_value)
+        self.left_talon_externo_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_talon_externo_value.setStyleSheet(f'QLabel#{self.left_talon_externo_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_talon_externo_value = mt3.ValueLabel(self.regiones_card, 'right_talon_externo_value',
+            (136, y_5, 64), self.theme_value)
+        self.right_talon_externo_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_talon_externo_value.setStyleSheet(f'QLabel#{self.right_talon_externo_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+
+        y_5 += 40
+        self.mediopie_interno_label = mt3.ItemLabel(self.regiones_card, 'mediopie_interno_label',
+            (8, y_5), ('RMS (mm)', 'RMS (mm)'), self.theme_value, self.language_value)
+        y_5 += 16
+        self.left_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'left_ap_rms_value',
+            (8, y_5, 64), self.theme_value)
+        self.left_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_ap_rms_value.setStyleSheet(f'QLabel#{self.left_ap_rms_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'right_ap_rms_value',
+            (136, y_5, 64), self.theme_value)
+        self.right_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_ap_rms_value.setStyleSheet(f'QLabel#{self.right_ap_rms_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+
+        y_5 += 40
+        self.ap_vel_label = mt3.ItemLabel(self.regiones_card, 'ap_vel_label',
             (8, y_5), ('Velocidad Media (mm/s)', 'Mean Velocity (mm/s)'), self.theme_value, self.language_value)
         y_5 += 16
-        self.left_ap_vel_value = mt3.ValueLabel(self.antPost_card, 'left_ap_vel_value',
+        self.left_ap_vel_value = mt3.ValueLabel(self.regiones_card, 'left_ap_vel_value',
             (8, y_5, 64), self.theme_value)
         self.left_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.left_ap_vel_value.setStyleSheet(f'QLabel#{self.left_ap_vel_value.name} {{'
             f'border: 2px solid #FF0000; border-radius: 16 }}')
-        self.right_ap_vel_value = mt3.ValueLabel(self.antPost_card, 'right_ap_vel_value',
+        self.right_ap_vel_value = mt3.ValueLabel(self.regiones_card, 'right_ap_vel_value',
             (136, y_5, 64), self.theme_value)
         self.right_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.right_ap_vel_value.setStyleSheet(f'QLabel#{self.right_ap_vel_value.name} {{'
             f'border: 2px solid #0000FF; border-radius: 16 }}')
 
         y_5 += 40
-        self.ap_rms_label = mt3.ItemLabel(self.antPost_card, 'ap_rms_label',
+        self.ap_rms_label = mt3.ItemLabel(self.regiones_card, 'ap_rms_label',
             (8, y_5), ('RMS (mm)', 'RMS (mm)'), self.theme_value, self.language_value)
         y_5 += 16
-        self.left_ap_rms_value = mt3.ValueLabel(self.antPost_card, 'left_ap_rms_value',
+        self.left_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'left_ap_rms_value',
             (8, y_5, 64), self.theme_value)
         self.left_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.left_ap_rms_value.setStyleSheet(f'QLabel#{self.left_ap_rms_value.name} {{'
             f'border: 2px solid #FF0000; border-radius: 16 }}')
-        self.right_ap_rms_value = mt3.ValueLabel(self.antPost_card, 'right_ap_rms_value',
+        self.right_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'right_ap_rms_value',
+            (136, y_5, 64), self.theme_value)
+        self.right_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_ap_rms_value.setStyleSheet(f'QLabel#{self.right_ap_rms_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+            
+        y_5 += 40
+        self.ap_vel_label = mt3.ItemLabel(self.regiones_card, 'ap_vel_label',
+            (8, y_5), ('Velocidad Media (mm/s)', 'Mean Velocity (mm/s)'), self.theme_value, self.language_value)
+        y_5 += 16
+        self.left_ap_vel_value = mt3.ValueLabel(self.regiones_card, 'left_ap_vel_value',
+            (8, y_5, 64), self.theme_value)
+        self.left_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_ap_vel_value.setStyleSheet(f'QLabel#{self.left_ap_vel_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_ap_vel_value = mt3.ValueLabel(self.regiones_card, 'right_ap_vel_value',
+            (136, y_5, 64), self.theme_value)
+        self.right_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_ap_vel_value.setStyleSheet(f'QLabel#{self.right_ap_vel_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+
+        y_5 += 40
+        self.ap_rms_label = mt3.ItemLabel(self.regiones_card, 'ap_rms_label',
+            (8, y_5), ('RMS (mm)', 'RMS (mm)'), self.theme_value, self.language_value)
+        y_5 += 16
+        self.left_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'left_ap_rms_value',
+            (8, y_5, 64), self.theme_value)
+        self.left_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_ap_rms_value.setStyleSheet(f'QLabel#{self.left_ap_rms_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'right_ap_rms_value',
+            (136, y_5, 64), self.theme_value)
+        self.right_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_ap_rms_value.setStyleSheet(f'QLabel#{self.right_ap_rms_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+            
+        y_5 += 40
+        self.ap_vel_label = mt3.ItemLabel(self.regiones_card, 'ap_vel_label',
+            (8, y_5), ('Velocidad Media (mm/s)', 'Mean Velocity (mm/s)'), self.theme_value, self.language_value)
+        y_5 += 16
+        self.left_ap_vel_value = mt3.ValueLabel(self.regiones_card, 'left_ap_vel_value',
+            (8, y_5, 64), self.theme_value)
+        self.left_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_ap_vel_value.setStyleSheet(f'QLabel#{self.left_ap_vel_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_ap_vel_value = mt3.ValueLabel(self.regiones_card, 'right_ap_vel_value',
+            (136, y_5, 64), self.theme_value)
+        self.right_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_ap_vel_value.setStyleSheet(f'QLabel#{self.right_ap_vel_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+
+        y_5 += 40
+        self.ap_rms_label = mt3.ItemLabel(self.regiones_card, 'ap_rms_label',
+            (8, y_5), ('RMS (mm)', 'RMS (mm)'), self.theme_value, self.language_value)
+        y_5 += 16
+        self.left_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'left_ap_rms_value',
+            (8, y_5, 64), self.theme_value)
+        self.left_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_ap_rms_value.setStyleSheet(f'QLabel#{self.left_ap_rms_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'right_ap_rms_value',
+            (136, y_5, 64), self.theme_value)
+        self.right_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_ap_rms_value.setStyleSheet(f'QLabel#{self.right_ap_rms_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+            
+        y_5 += 40
+        self.ap_vel_label = mt3.ItemLabel(self.regiones_card, 'ap_vel_label',
+            (8, y_5), ('Velocidad Media (mm/s)', 'Mean Velocity (mm/s)'), self.theme_value, self.language_value)
+        y_5 += 16
+        self.left_ap_vel_value = mt3.ValueLabel(self.regiones_card, 'left_ap_vel_value',
+            (8, y_5, 64), self.theme_value)
+        self.left_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_ap_vel_value.setStyleSheet(f'QLabel#{self.left_ap_vel_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_ap_vel_value = mt3.ValueLabel(self.regiones_card, 'right_ap_vel_value',
+            (136, y_5, 64), self.theme_value)
+        self.right_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_ap_vel_value.setStyleSheet(f'QLabel#{self.right_ap_vel_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+
+        y_5 += 40
+        self.ap_rms_label = mt3.ItemLabel(self.regiones_card, 'ap_rms_label',
+            (8, y_5), ('RMS (mm)', 'RMS (mm)'), self.theme_value, self.language_value)
+        y_5 += 16
+        self.left_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'left_ap_rms_value',
+            (8, y_5, 64), self.theme_value)
+        self.left_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_ap_rms_value.setStyleSheet(f'QLabel#{self.left_ap_rms_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'right_ap_rms_value',
+            (136, y_5, 64), self.theme_value)
+        self.right_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_ap_rms_value.setStyleSheet(f'QLabel#{self.right_ap_rms_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+
+        y_5 += 40
+        self.ap_rms_label = mt3.ItemLabel(self.regiones_card, 'ap_rms_label',
+            (8, y_5), ('RMS (mm)', 'RMS (mm)'), self.theme_value, self.language_value)
+        y_5 += 16
+        self.left_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'left_ap_rms_value',
+            (8, y_5, 64), self.theme_value)
+        self.left_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_ap_rms_value.setStyleSheet(f'QLabel#{self.left_ap_rms_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'right_ap_rms_value',
             (136, y_5, 64), self.theme_value)
         self.right_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.right_ap_rms_value.setStyleSheet(f'QLabel#{self.right_ap_rms_value.name} {{'
@@ -375,25 +534,14 @@ class App(QWidget):
         self.analisis_card.language_text(index)
         self.info_card.language_text(index)
 
-        # self.somatotipo_plot_card.language_text(index)
+        self.presion_plot_card.language_text(index)
 
-        # self.endomorph_card.language_text(index)
-        # self.triceps_text.language_text(index)
-        # self.subescapular_text.language_text(index)
-        # self.supraespinal_text.language_text(index)
-        # self.pantorrilla_text.language_text(index)
-
-        # self.mesomorph_card.language_text(index)
-        # self.altura_meso.language_text(index)
-        # self.humero_text.language_text(index)
-        # self.femur_text.language_text(index)
-        # self.biceps_text.language_text(index)
-        # self.tricipital_text.language_text(index)
-        # self.pantorrilla_perimetro_text.language_text(index)
-        # self.pantorrilla_pliegue_text.language_text(index)
-
-        # self.ectomorph_card.language_text(index)
-        # self.peso_ecto.language_text(index)
+        self.globales_card.language_text(index)
+        self.presion_total_label.language_text(index)
+        self.presion_left_label.language_text(index)
+        self.presion_right_label.language_text(index)
+        self.presion_antepie_label.language_text(index)
+        self.presion_retropie_label.language_text(index)
 
         self.settings.setValue('language', str(index))
         self.language_value = int(self.settings.value('language'))
@@ -457,7 +605,7 @@ class App(QWidget):
         self.altura_value.apply_styleSheet(state)
         self.bmi_value.apply_styleSheet(state)
 
-    #     self.somatotipo_plot_card.apply_styleSheet(state)
+        self.presion_plot_card.apply_styleSheet(state)
 
     #     self.somatotipo_plot.apply_styleSheet(state)
     #     if self.lat_text_1:
@@ -471,25 +619,25 @@ class App(QWidget):
     #             self.lat_text_2 = self.somatotipo_plot.axes.text(self.data_lat_t_min, self.data_lat_min, f'{self.data_lat_min:.2f}', color='#E5E9F0')
     #     self.somatotipo_plot.draw()
 
-    #     self.endomorph_card.apply_styleSheet(state)
-    #     self.triceps_text.apply_styleSheet(state)
-    #     self.subescapular_text.apply_styleSheet(state)
-    #     self.supraespinal_text.apply_styleSheet(state)
-    #     self.pantorrilla_text.apply_styleSheet(state)
+        self.globales_card.apply_styleSheet(state)
+        self.presion_total_label.apply_styleSheet(state)
+        self.presion_total_value.apply_styleSheet(state)
+        self.presion_total_percent.apply_styleSheet(state)
+        self.presion_left_label.apply_styleSheet(state)
+        self.presion_left_value.apply_styleSheet(state)
+        self.presion_left_percent.apply_styleSheet(state)
+        self.presion_right_label.apply_styleSheet(state)
+        self.presion_right_value.apply_styleSheet(state)
+        self.presion_right_percent.apply_styleSheet(state)
+        self.presion_antepie_label.apply_styleSheet(state)
+        self.presion_antepie_value.apply_styleSheet(state)
+        self.presion_antepie_percent.apply_styleSheet(state)
+        self.presion_retropie_label.apply_styleSheet(state)
+        self.presion_retropie_value.apply_styleSheet(state)
+        self.presion_retropie_percent.apply_styleSheet(state)
+     
 
-    #     self.mesomorph_card.apply_styleSheet(state)
-    #     self.altura_meso.apply_styleSheet(state)
-    #     self.altura_value_meso.apply_styleSheet(state)
-    #     self.humero_text.apply_styleSheet(state)
-    #     self.femur_text.apply_styleSheet(state)
-    #     self.biceps_text.apply_styleSheet(state)
-    #     self.tricipital_text.apply_styleSheet(state)
-    #     self.pantorrilla_perimetro_text.apply_styleSheet(state)
-    #     self.pantorrilla_pliegue_text.apply_styleSheet(state)
-
-    #     self.ectomorph_card.apply_styleSheet(state)
-    #     self.peso_ecto.apply_styleSheet(state)
-    #     self.peso_value_ecto.apply_styleSheet(state)
+        
 
     #     self.settings.setValue('theme', f'{state}')
     #     self.theme_value = eval(self.settings.value('theme'))
@@ -554,13 +702,13 @@ class App(QWidget):
         self.about_button.move(width - 96, 8)
         self.aboutQt_button.move(width - 56, 8)
 
-        self.somatotipo_plot_card.setGeometry(196, 64, width - 636, int(height * 0.75))
-        self.somatotipo_plot_card.title.resize(width - 652, 32)
-        # self.somatotipo_plot.setGeometry(8, 48, self.somatotipo_plot_card.width()-16, self.somatotipo_plot_card.height()-56)
+        self.presion_plot_card.setGeometry(196, 64, width - 636, int(height * 0.75))
+        self.presion_plot_card.title.resize(width - 652, 32)
+        # self.somatotipo_plot.setGeometry(8, 48, self.presion_plot_card.width()-16, self.presion_plot_card.height()-56)
         
-        self.lateral_card.setGeometry(width - 432, 64, 208, 216)
-        self.antPost_card.setGeometry(width - 216, 64, 208, 216)
-        self.opciones_card.setGeometry(width - 432, 288, 208, 228)
+        self.globales_card.setGeometry(width - 432, 64, 208, 328)
+        self.regiones_card.setGeometry(width - 216, 64, 208, 600)
+        self.opciones_card.setGeometry(width - 432, 400, 208, 228)
 
         return super().resizeEvent(a0)
 
