@@ -117,7 +117,7 @@ class App(QWidget):
         y_1 = 48
         self.pacientes_menu = mt3.Menu(self.paciente_card, 'pacientes_menu',
             (8, y_1, 164), 10, 10, {}, self.theme_value, self.language_value)
-        # self.pacientes_menu.textActivated.connect(self.on_pacientes_menu_textActivated)
+        self.pacientes_menu.textActivated.connect(self.on_pacientes_menu_textActivated)
 
         y_1 += 40
         self.paciente_add_button = mt3.IconButton(self.paciente_card, 'paciente_add_button',
@@ -126,11 +126,11 @@ class App(QWidget):
 
         self.paciente_edit_button = mt3.IconButton(self.paciente_card, 'paciente_edit_button',
             (100, y_1), 'edit.png', self.theme_value)
-        # self.paciente_edit_button.clicked.connect(self.on_paciente_edit_button_clicked)
+        self.paciente_edit_button.clicked.connect(self.on_paciente_edit_button_clicked)
 
         self.paciente_del_button = mt3.IconButton(self.paciente_card, 'paciente_del_button',
             (140, y_1), 'person_off.png', self.theme_value)
-        # self.paciente_del_button.clicked.connect(self.on_paciente_del_button_clicked)
+        self.paciente_del_button.clicked.connect(self.on_paciente_del_button_clicked)
 
         # -------------
         # Card Análisis
@@ -493,26 +493,26 @@ class App(QWidget):
         self.right_dedo_3_5_value.setStyleSheet(f'QLabel#{self.right_dedo_3_5_value.name} {{'
             f'border: 2px solid #0000FF; border-radius: 16 }}')
 
-    #     # -------------
-    #     # Base de Datos
-    #     # -------------
-    #     try:
-    #         self.patientes_list = backend.create_db('pacientes')
-    #         self.estudios_list = backend.create_db('estudios')
+        # -------------
+        # Base de Datos
+        # -------------
+        try:
+            self.patientes_list = backend.create_db('pacientes')
+            self.estudios_list = backend.create_db('estudios')
 
-    #         for data in self.patientes_list:
-    #             self.pacientes_menu.addItem(str(data[4]))
-    #         self.pacientes_menu.setCurrentIndex(-1)
-    #     except:
-    #         self.pacientes_menu.setEnabled(False)
-    #         self.paciente_add_button.setEnabled(False)
-    #         self.paciente_edit_button.setEnabled(False)
-    #         self.paciente_del_button.setEnabled(False)
+            for data in self.patientes_list:
+                self.pacientes_menu.addItem(str(data[4]))
+            self.pacientes_menu.setCurrentIndex(-1)
+        except:
+            self.pacientes_menu.setEnabled(False)
+            self.paciente_add_button.setEnabled(False)
+            self.paciente_edit_button.setEnabled(False)
+            self.paciente_del_button.setEnabled(False)
             
-    #         if self.language_value == 0:
-    #             QtWidgets.QMessageBox.critical(self, 'Error de Base de Datos', 'La base de datos no está configurada')
-    #         elif self.language_value == 1:
-    #             QtWidgets.QMessageBox.critical(self, 'Database Error', 'Database not configured')
+            if self.language_value == 0:
+                QtWidgets.QMessageBox.critical(self, 'Error de Base de Datos', 'La base de datos no está configurada')
+            elif self.language_value == 1:
+                QtWidgets.QMessageBox.critical(self, 'Database Error', 'Database not configured')
 
     # ----------------
     # Funciones Título
@@ -881,204 +881,219 @@ class App(QWidget):
             self.altura_value.setText(f'{self.patient_window.patient_data["height"]} {self.patient_window.patient_data["height_unit"]}')
             self.bmi_value.setText(self.patient_window.patient_data['bmi'])
 
-    #         # -------------
-    #         # Base de datos
-    #         # -------------
-    #         self.patientes_list = backend.add_db('pacientes', self.patient_window.patient_data)
+            # -------------
+            # Base de datos
+            # -------------
+            self.patientes_list = backend.add_db('pacientes', self.patient_window.patient_data)
             
-    #         self.pacientes_menu.clear()
-    #         for data in self.patientes_list:
-    #             self.pacientes_menu.addItem(str(data[4]))
-    #         self.pacientes_menu.setCurrentIndex(len(self.patientes_list)-1)
+            self.pacientes_menu.clear()
+            for data in self.patientes_list:
+                self.pacientes_menu.addItem(str(data[4]))
+            self.pacientes_menu.setCurrentIndex(len(self.patientes_list)-1)
 
-    #         self.analisis_add_button.setEnabled(True)
-    #         self.analisis_del_button.setEnabled(True)
-    #         self.analisis_menu.setEnabled(True)
+            self.analisis_add_button.setEnabled(True)
+            self.analisis_del_button.setEnabled(True)
+            self.analisis_menu.setEnabled(True)
 
-    #         if self.language_value == 0:
-    #             QtWidgets.QMessageBox.information(self, 'Datos Guardados', 'Paciente agregado a la base de datos')
-    #         elif self.language_value == 1:
-    #             QtWidgets.QMessageBox.information(self, 'Data Saved', 'Patient added to database')
-    #     else:
-    #         if self.language_value == 0:
-    #             QtWidgets.QMessageBox.critical(self, 'Error de Datos', 'No se dio información de un paciente nuevo')
-    #         elif self.language_value == 1:
-    #             QtWidgets.QMessageBox.critical(self, 'Data Error', 'No information on a new patient was given')
-
-
-    # def on_paciente_edit_button_clicked(self) -> None:
-    #     """ Edit patient button in the database """
-    #     patient_id = self.pacientes_menu.currentText()
-
-    #     if patient_id != '':
-    #         patient_data = backend.get_db('pacientes', patient_id)
-
-    #         id_db = patient_data[0][0]
-    #         self.patient_window = patient.Patient()
-    #         self.patient_window.apellido_text.text_field.setText(patient_data[0][1])
-    #         self.patient_window.nombre_text.text_field.setText(patient_data[0][2])
-    #         if patient_data[0][3] == 'CC':
-    #             self.patient_window.cc_button.set_state(True)
-    #         elif patient_data[0][3] == 'TI':
-    #             self.patient_window.ti_button.set_state(True)
-    #         self.patient_window.id_text.text_field.setText(str(patient_data[0][4]))
-    #         self.patient_window.fecha_date.text_field.setDate(QtCore.QDate.fromString(patient_data[0][5], 'dd/MM/yyyy'))
-    #         if patient_data[0][6] == 'F':
-    #             self.patient_window.f_button.set_state(True)
-    #         elif patient_data[0][6] == 'M':
-    #             self.patient_window.m_button.set_state(True)
-    #         self.patient_window.peso_text.text_field.setText(str(patient_data[0][7]))
-    #         if patient_data[0][8] == 'Kg':
-    #             self.patient_window.kg_button.set_state(True)
-    #         elif patient_data[0][8] == 'Lb':
-    #             self.patient_window.lb_button.set_state(True)
-    #         self.patient_window.altura_text.text_field.setText(str(patient_data[0][9]))
-    #         if patient_data[0][10] == 'm':
-    #             self.patient_window.mt_button.set_state(True)
-    #         elif patient_data[0][10] == 'ft - in':
-    #             self.patient_window.fi_button.set_state(True)
-    #         self.patient_window.bmi_value_label.setText(str(patient_data[0][11]))
-
-    #         self.patient_window.exec()
-
-    #         if self.patient_window.patient_data:
-    #             self.patientes_list = backend.edit_db('pacientes', id_db, self.patient_window.patient_data)
-
-    #             self.pacientes_menu.clear()
-    #             for data in self.patientes_list:
-    #                 self.pacientes_menu.addItem(str(data[4]))
-    #             self.pacientes_menu.setCurrentIndex(-1)
-
-    #             self.analisis_add_button.setEnabled(False)
-    #             self.analisis_del_button.setEnabled(False)
-    #             self.analisis_menu.setEnabled(False)
-
-    #             self.apellido_value.setText('')
-    #             self.nombre_value.setText('')
-    #             self.id_value.setText('')
-    #             self.fecha_value.setText('')
-    #             self.sex_value.setText('')
-    #             self.sex_label.set_icon('', self.theme_value)
-    #             self.peso_value.setText('')
-    #             self.altura_value.setText('')
-    #             self.bmi_value.setText('')
-
-    #             if self.language_value == 0:
-    #                 QtWidgets.QMessageBox.information(self, 'Datos Guardados', 'Paciente editado en la base de datos')
-    #             elif self.language_value == 1:
-    #                 QtWidgets.QMessageBox.information(self, 'Data Saved', 'Patient edited in database')
-    #         else:
-    #             if self.language_value == 0:
-    #                 QtWidgets.QMessageBox.critical(self, 'Error de Datos', 'No se dio información del paciente')
-    #             elif self.language_value == 1:
-    #                 QtWidgets.QMessageBox.critical(self, 'Data Error', 'No information on a patient was given')
-    #     else:
-    #         if self.language_value == 0:
-    #             QtWidgets.QMessageBox.critical(self, 'Error de Paciente', 'No se seleccionó un paciente')
-    #         elif self.language_value == 1:
-    #             QtWidgets.QMessageBox.critical(self, 'Patient Error', 'No patient selected')
+            if self.language_value == 0:
+                QtWidgets.QMessageBox.information(self, 'Datos Guardados', 'Paciente agregado a la base de datos')
+            elif self.language_value == 1:
+                QtWidgets.QMessageBox.information(self, 'Data Saved', 'Patient added to database')
+        else:
+            if self.language_value == 0:
+                QtWidgets.QMessageBox.critical(self, 'Error de Datos', 'No se dio información de un paciente nuevo')
+            elif self.language_value == 1:
+                QtWidgets.QMessageBox.critical(self, 'Data Error', 'No information on a new patient was given')
 
 
-    # def on_paciente_del_button_clicked(self) -> None:
-    #     """ Delete patient button from the database """
-    #     patient_id = self.pacientes_menu.currentText()
+    def on_paciente_edit_button_clicked(self) -> None:
+        """ Edit patient button in the database """
+        patient_id = self.pacientes_menu.currentText()
 
-    #     if patient_id != '':
-    #         self.patientes_list = backend.delete_db('pacientes', patient_id)
+        if patient_id != '':
+            patient_data = backend.get_db('pacientes', patient_id)
 
-    #         self.pacientes_menu.clear()
-    #         for data in self.patientes_list:
-    #             self.pacientes_menu.addItem(str(data[4]))
-    #         self.pacientes_menu.setCurrentIndex(-1)
+            id_db = patient_data[0][0]
+            self.patient_window = patient.Patient()
+            self.patient_window.apellido_text.text_field.setText(patient_data[0][1])
+            self.patient_window.nombre_text.text_field.setText(patient_data[0][2])
+            if patient_data[0][3] == 'CC':
+                self.patient_window.cc_button.set_state(True)
+            elif patient_data[0][3] == 'TI':
+                self.patient_window.ti_button.set_state(True)
+            self.patient_window.id_text.text_field.setText(str(patient_data[0][4]))
+            self.patient_window.fecha_date.text_field.setDate(QtCore.QDate.fromString(patient_data[0][5], 'dd/MM/yyyy'))
+            if patient_data[0][6] == 'F':
+                self.patient_window.f_button.set_state(True)
+            elif patient_data[0][6] == 'M':
+                self.patient_window.m_button.set_state(True)
+            self.patient_window.peso_text.text_field.setText(str(patient_data[0][7]))
+            if patient_data[0][8] == 'Kg':
+                self.patient_window.kg_button.set_state(True)
+            elif patient_data[0][8] == 'Lb':
+                self.patient_window.lb_button.set_state(True)
+            self.patient_window.altura_text.text_field.setText(str(patient_data[0][9]))
+            if patient_data[0][10] == 'm':
+                self.patient_window.mt_button.set_state(True)
+            elif patient_data[0][10] == 'ft - in':
+                self.patient_window.fi_button.set_state(True)
+            self.patient_window.bmi_value_label.setText(str(patient_data[0][11]))
 
-    #         self.analisis_add_button.setEnabled(False)
-    #         self.analisis_del_button.setEnabled(False)
-    #         self.analisis_menu.setEnabled(False)
+            self.patient_window.exec()
 
-    #         self.apellido_value.setText('')
-    #         self.nombre_value.setText('')
-    #         self.id_value.setText('')
-    #         self.fecha_value.setText('')
-    #         self.sex_value.setText('')
-    #         self.sex_label.set_icon('', self.theme_value)
-    #         self.peso_value.setText('')
-    #         self.altura_value.setText('')
-    #         self.bmi_value.setText('')
+            if self.patient_window.patient_data:
+                self.patientes_list = backend.edit_db('pacientes', id_db, self.patient_window.patient_data)
 
-    #         if self.language_value == 0:
-    #             QtWidgets.QMessageBox.information(self, 'Datos Guardados', 'Paciente eliminado de la base de datos')
-    #         elif self.language_value == 1:
-    #             QtWidgets.QMessageBox.information(self, 'Data Saved', 'Patient deleted from database')
-    #     else:
-    #         if self.language_value == 0:
-    #             QtWidgets.QMessageBox.critical(self, 'Error de Paciente', 'No se seleccionó un paciente')
-    #         elif self.language_value == 1:
-    #             QtWidgets.QMessageBox.critical(self, 'Patient Error', 'No patient selected')
+                self.pacientes_menu.clear()
+                for data in self.patientes_list:
+                    self.pacientes_menu.addItem(str(data[4]))
+                self.pacientes_menu.setCurrentIndex(-1)
+
+                self.analisis_add_button.setEnabled(False)
+                self.analisis_del_button.setEnabled(False)
+                self.analisis_menu.setEnabled(False)
+
+                self.apellido_value.setText('')
+                self.nombre_value.setText('')
+                self.id_value.setText('')
+                self.fecha_value.setText('')
+                self.sex_value.setText('')
+                self.sex_label.set_icon('', self.theme_value)
+                self.peso_value.setText('')
+                self.altura_value.setText('')
+                self.bmi_value.setText('')
+
+                if self.language_value == 0:
+                    QtWidgets.QMessageBox.information(self, 'Datos Guardados', 'Paciente editado en la base de datos')
+                elif self.language_value == 1:
+                    QtWidgets.QMessageBox.information(self, 'Data Saved', 'Patient edited in database')
+            else:
+                if self.language_value == 0:
+                    QtWidgets.QMessageBox.critical(self, 'Error de Datos', 'No se dio información del paciente')
+                elif self.language_value == 1:
+                    QtWidgets.QMessageBox.critical(self, 'Data Error', 'No information on a patient was given')
+        else:
+            if self.language_value == 0:
+                QtWidgets.QMessageBox.critical(self, 'Error de Paciente', 'No se seleccionó un paciente')
+            elif self.language_value == 1:
+                QtWidgets.QMessageBox.critical(self, 'Patient Error', 'No patient selected')
 
 
-    # def on_pacientes_menu_textActivated(self, current_pacient: str) -> None:
-    #     """ Change active patient and present previously saved studies and information
+    def on_paciente_del_button_clicked(self) -> None:
+        """ Delete patient button from the database """
+        patient_id = self.pacientes_menu.currentText()
+
+        if patient_id != '':
+            self.patientes_list = backend.delete_db('pacientes', patient_id)
+
+            self.pacientes_menu.clear()
+            for data in self.patientes_list:
+                self.pacientes_menu.addItem(str(data[4]))
+            self.pacientes_menu.setCurrentIndex(-1)
+
+            self.analisis_add_button.setEnabled(False)
+            self.analisis_del_button.setEnabled(False)
+            self.analisis_menu.setEnabled(False)
+
+            self.apellido_value.setText('')
+            self.nombre_value.setText('')
+            self.id_value.setText('')
+            self.fecha_value.setText('')
+            self.sex_value.setText('')
+            self.sex_label.set_icon('', self.theme_value)
+            self.peso_value.setText('')
+            self.altura_value.setText('')
+            self.bmi_value.setText('')
+
+            if self.language_value == 0:
+                QtWidgets.QMessageBox.information(self, 'Datos Guardados', 'Paciente eliminado de la base de datos')
+            elif self.language_value == 1:
+                QtWidgets.QMessageBox.information(self, 'Data Saved', 'Patient deleted from database')
+        else:
+            if self.language_value == 0:
+                QtWidgets.QMessageBox.critical(self, 'Error de Paciente', 'No se seleccionó un paciente')
+            elif self.language_value == 1:
+                QtWidgets.QMessageBox.critical(self, 'Patient Error', 'No patient selected')
+
+
+    def on_pacientes_menu_textActivated(self, current_pacient: str) -> None:
+        """ Change active patient and present previously saved studies and information
         
-    #     Parameters
-    #     ----------
-    #     current_pacient: str
-    #         Current pacient text
+        Parameters
+        ----------
+        current_pacient: str
+            Current pacient text
         
-    #     Returns
-    #     -------
-    #     None
-    #     """
-    #     patient_data = backend.get_db('pacientes', current_pacient)
+        Returns
+        -------
+        None
+        """
+        patient_data = backend.get_db('pacientes', current_pacient)
 
-    #     if patient_data[0][6] == 'F':
-    #         self.sex_label.set_icon('woman', self.theme_value)
-    #     elif patient_data[0][6] == 'M':
-    #         self.sex_label.set_icon('man', self.theme_value)
+        if patient_data[0][6] == 'F':
+            self.sex_label.set_icon('woman', self.theme_value)
+        elif patient_data[0][6] == 'M':
+            self.sex_label.set_icon('man', self.theme_value)
 
-    #     self.apellido_value.setText(patient_data[0][1])
-    #     self.nombre_value.setText(patient_data[0][2])
-    #     self.id_value.setText(f'{patient_data[0][3]} {patient_data[0][4]}')
-    #     self.fecha_value.setText(patient_data[0][5])
-    #     self.sex_value.setText(patient_data[0][6])
-    #     self.peso_value.setText(f'{patient_data[0][7]} {patient_data[0][8]}')
-    #     self.altura_value.setText(f'{patient_data[0][9]} {patient_data[0][10]}')
-    #     self.bmi_value.setText(str(patient_data[0][11]))
+        self.apellido_value.setText(patient_data[0][1])
+        self.nombre_value.setText(patient_data[0][2])
+        self.id_value.setText(f'{patient_data[0][3]} {patient_data[0][4]}')
+        self.fecha_value.setText(patient_data[0][5])
+        self.sex_value.setText(patient_data[0][6])
+        self.peso_value.setText(f'{patient_data[0][7]} {patient_data[0][8]}')
+        self.altura_value.setText(f'{patient_data[0][9]} {patient_data[0][10]}')
+        self.bmi_value.setText(str(patient_data[0][11]))
 
-    #     self.analisis_add_button.setEnabled(True)
-    #     self.analisis_del_button.setEnabled(True)
-    #     self.analisis_menu.setEnabled(True)
+        self.analisis_add_button.setEnabled(True)
+        self.analisis_del_button.setEnabled(True)
+        self.analisis_menu.setEnabled(True)
 
-    #     self.estudios_list = backend.get_db('estudios', current_pacient)
-    #     self.analisis_menu.clear()
-    #     for data in self.estudios_list:
-    #         self.analisis_menu.addItem(data[2])
-    #     self.analisis_menu.setCurrentIndex(-1)
+        self.estudios_list = backend.get_db('estudios', current_pacient)
+        self.analisis_menu.clear()
+        for data in self.estudios_list:
+            self.analisis_menu.addItem(data[2])
+        self.analisis_menu.setCurrentIndex(-1)
 
-    #     self.lateral_plot.axes.cla()
-    #     self.lateral_plot.draw()
-    #     self.antePost_plot.axes.cla()
-    #     self.antePost_plot.draw()
-    #     self.elipse_plot.axes.cla()
-    #     self.elipse_plot.draw()
-    #     self.hull_plot.axes.cla()
-    #     self.hull_plot.draw()
-    #     self.pca_plot.axes.cla()
-    #     self.pca_plot.draw()
+        # self.lateral_plot.axes.cla()
+        # self.lateral_plot.draw()
+ 
+        self.presion_total_value.setText('')
+        self.presion_total_percent.setText('')
+        self.presion_left_value.setText('')
+        self.presion_left_percent.setText('')
+        self.presion_right_value.setText('')
+        self.presion_right_percent.setText('')
+        self.presion_antepie_value.setText('')
+        self.presion_antepie_percent.setText('')
+        self.presion_retropie_value.setText('')
+        self.presion_retropie_percent.setText('')
+     
+        self.left_talon_interno_value.setText('')
+        self.right_talon_interno_value.setText('')
+        self.left_talon_externo_value.setText('')
+        self.right_talon_externo_value.setText('')
+        self.left_mediopie_interno_value.setText('')
+        self.right_mediopie_interno_value.setText('')
+        self.left_mediopie_externo_value.setText('')
+        self.right_mediopie_externo_value.setText('')
+        self.left_metatarsiano_1_value.setText('')
+        self.right_metatarsiano_1_value.setText('')
+        self.left_metatarsiano_2_value.setText('')
+        self.right_metatarsiano_2_value.setText('')
+        self.left_metatarsiano_3_value.setText('')
+        self.right_metatarsiano_3_value.setText('')
+        self.left_metatarsiano_4_value.setText('')
+        self.right_metatarsiano_4_value.setText('')
+        self.left_metatarsiano_5_value.setText('')
+        self.right_metatarsiano_5_value.setText('')
+        self.left_dedo_1_value.setText('')
+        self.right_dedo_1_value.setText('')
+        self.left_dedo_2_value.setText('')
+        self.right_dedo_2_value.setText('')
+        self.left_dedo_3_5_value.setText('')
+        self.right_dedo_3_5_value.setText('')
 
-    #     self.lat_rango_value.setText('')
-    #     self.lat_vel_value.setText('')
-    #     self.lat_rms_value.setText('')
-    #     self.ap_rango_value.setText('')
-    #     self.ap_vel_value.setText('')
-    #     self.ap_rms_value.setText('')
-    #     self.cop_vel_value.setText('')
-    #     self.distancia_value.setText('')
-    #     self.frecuencia_value.setText('')
-    #     self.elipse_value.setText('')
-    #     self.hull_value.setText('')
-    #     self.pca_value.setText('')
 
-    
     # -----------------
     # Funciones Estudio
     # -----------------
