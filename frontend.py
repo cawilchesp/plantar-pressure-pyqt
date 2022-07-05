@@ -93,19 +93,19 @@ class App(QWidget):
 
         self.database_button = mt3.IconButton(self.titulo_card, 'database_button',
             (8, 8), 'database.png', self.theme_value)
-        # self.database_button.clicked.connect(self.on_database_button_clicked)
+        self.database_button.clicked.connect(self.on_database_button_clicked)
 
         self.manual_button = mt3.IconButton(self.titulo_card, 'manual_button',
             (8, 8), 'help.png', self.theme_value)
-        # self.manual_button.clicked.connect(self.on_manual_button_clicked)
+        self.manual_button.clicked.connect(self.on_manual_button_clicked)
 
         self.about_button = mt3.IconButton(self.titulo_card, 'about_button',
             (8, 8), 'mail_L.png', self.theme_value)
-        # self.about_button.clicked.connect(self.on_about_button_clicked)
+        self.about_button.clicked.connect(self.on_about_button_clicked)
 
         self.aboutQt_button = mt3.IconButton(self.titulo_card, 'aboutQt_button',
             (8, 8), 'about_qt.png', self.theme_value)
-        # self.aboutQt_button.clicked.connect(self.on_aboutQt_button_clicked)
+        self.aboutQt_button.clicked.connect(self.on_aboutQt_button_clicked)
 
         # -------------
         # Card Paciente
@@ -122,7 +122,7 @@ class App(QWidget):
         y_1 += 40
         self.paciente_add_button = mt3.IconButton(self.paciente_card, 'paciente_add_button',
             (60, y_1), 'person_add.png', self.theme_value)
-        # self.paciente_add_button.clicked.connect(self.on_paciente_add_button_clicked)
+        self.paciente_add_button.clicked.connect(self.on_paciente_add_button_clicked)
 
         self.paciente_edit_button = mt3.IconButton(self.paciente_card, 'paciente_edit_button',
             (100, y_1), 'edit.png', self.theme_value)
@@ -218,11 +218,63 @@ class App(QWidget):
             self.theme_value, self.language_value)
     #     self.somatotipo_plot = backend.MPLCanvas(self.presion_plot_card, self.theme_value)
 
+        # -------------
+        # Card Opciones
+        # -------------
+        self.opciones_card = mt3.Card(self, 'opciones_card',
+            (196, 64, 228, 168), ('Opciones', 'Options'), 
+            self.theme_value, self.language_value)
+
+        y_8 = 48
+        self.opciones_plot_label = mt3.ItemLabel(self.opciones_card, 'opciones_plot_label',
+            (8, y_8), ('Opciones de la gráfica', 'Plot Options'), self.theme_value, self.language_value)
+
+        y_8 += 20
+        self.regiones_chip = mt3.Chip(self.opciones_card, 'regiones_chip',
+            (8, y_8, 124), ('Regiones', 'Regions'), ('done.png','none.png'), 
+            False, self.theme_value, self.language_value)
+        # self.regiones_chip.clicked.connect(self.on_regiones_chip_clicked)
+
+        self.presion_pico_local_chip = mt3.Chip(self.opciones_card, 'presion_pico_local_chip',
+            (140, y_8, 168), ('Presiones Pico Locales', 'Local Peak Pressures'), ('done.png','none.png'), 
+            False, self.theme_value, self.language_value)
+        # self.presion_pico_local_chip.clicked.connect(self.on_presion_pico_local_chip_clicked)
+
+        self.baricentros_chip = mt3.Chip(self.opciones_card, 'baricentros_chip',
+            (316, y_8, 124), ('Baricentros', 'Barycenters'), ('done.png','none.png'), 
+            False, self.theme_value, self.language_value)
+        # self.baricentros_chip.clicked.connect(self.on_baricentros_chip_clicked)
+
+        self.distribucion_chip = mt3.Chip(self.opciones_card, 'distribucion_chip',
+            (448, y_8, 124), ('Distribuciones', 'Distributions'), ('done.png','none.png'), 
+            False, self.theme_value, self.language_value)
+        # self.distribucion_chip.clicked.connect(self.on_distribucion_chip_clicked)
+
+        y_8 += 40
+        self.opciones_results_label = mt3.ItemLabel(self.opciones_card, 'opciones_results_label',
+            (8, y_8), ('Opciones de los resultados', 'Results Options'), self.theme_value, self.language_value)
+        
+        y_8 += 20
+        self.picos_button = mt3.SegmentedButton(self.opciones_card, 'picos_button',
+            (8, y_8, 136), ('Picos de Presión', 'Peak Pressures'), ('done.png','none.png'), 'left', 
+            False, self.theme_value, self.language_value)
+        # self.picos_button.clicked.connect(self.on_picos_button_clicked)
+
+        self.means_button = mt3.SegmentedButton(self.opciones_card, 'means_button',
+            (144, y_8, 144), ('Presiones Medias', 'Mean Pressures'), ('done.png','none.png'), 'center', 
+            False, self.theme_value, self.language_value)
+        # self.means_button.clicked.connect(self.on_means_button_clicked)
+
+        self.areas_button = mt3.SegmentedButton(self.opciones_card, 'areas_button',
+            (288, y_8, 148), ('Áreas de Contacto', 'Contact Areas'), ('done.png','none.png'), 'right', 
+            False, self.theme_value, self.language_value)
+        # self.areas_button.clicked.connect(self.on_areas_button_clicked)
+
         # ------------------------
         # Card Parámetros Globales
         # ------------------------
         self.globales_card = mt3.Card(self, 'globales_card',
-            (8, 8, 208, 328), ('Parámetros Globales', 'Global Parameters'), 
+            (8, 8, 424, 216), ('Parámetros Globales', 'Global Parameters'), 
             self.theme_value, self.language_value)
 
         y_4 = 48
@@ -237,49 +289,48 @@ class App(QWidget):
         y_4 += 40
         self.presion_left_label = mt3.ItemLabel(self.globales_card, 'presion_left_label',
             (8, y_4), ('Presión Pie Izquierdo (KPa)', 'Left Foot Pressure (KPa)'), self.theme_value, self.language_value)
+        self.presion_right_label = mt3.ItemLabel(self.globales_card, 'presion_right_label',
+            (216, y_4), ('Presión Pie Derecho (KPa)', 'Right Foot Pressure (KPa)'), self.theme_value, self.language_value)
+
         y_4 += 16
         self.presion_left_value = mt3.ValueLabel(self.globales_card, 'presion_left_value',
             (8, y_4, 64), self.theme_value)
         self.presion_left_percent = mt3.ValueLabel(self.globales_card, 'presion_left_percent',
             (80, y_4, 64), self.theme_value)
-
-        y_4 += 40
-        self.presion_right_label = mt3.ItemLabel(self.globales_card, 'presion_right_label',
-            (8, y_4), ('Presión Pie Derecho (KPa)', 'Right Foot Pressure (KPa)'), self.theme_value, self.language_value)
-        y_4 += 16
         self.presion_right_value = mt3.ValueLabel(self.globales_card, 'presion_right_value',
-            (8, y_4, 64), self.theme_value)
+            (216, y_4, 64), self.theme_value)
         self.presion_right_percent = mt3.ValueLabel(self.globales_card, 'presion_right_percent',
-            (80, y_4, 64), self.theme_value)
+            (296, y_4, 64), self.theme_value)
 
         y_4 += 40
         self.presion_antepie_label = mt3.ItemLabel(self.globales_card, 'presion_antepie_label',
             (8, y_4), ('Presión Antepié (KPa)', 'Forefoot Pressure (KPa)'), self.theme_value, self.language_value)
+        self.presion_retropie_label = mt3.ItemLabel(self.globales_card, 'presion_retropie_label',
+            (216, y_4), ('Presión Retropié (KPa)', 'Rarefoot Pressure (KPa)'), self.theme_value, self.language_value)
+        
         y_4 += 16
         self.presion_antepie_value = mt3.ValueLabel(self.globales_card, 'presion_antepie_value',
             (8, y_4, 64), self.theme_value)
         self.presion_antepie_percent = mt3.ValueLabel(self.globales_card, 'presion_antepie_percent',
             (80, y_4, 64), self.theme_value)
-
-        y_4 += 40
-        self.presion_retropie_label = mt3.ItemLabel(self.globales_card, 'presion_retropie_label',
-            (8, y_4), ('Presión Retropié (KPa)', 'Rarefoot Pressure (KPa)'), self.theme_value, self.language_value)
-        y_4 += 16
         self.presion_retropie_value = mt3.ValueLabel(self.globales_card, 'presion_retropie_value',
-            (8, y_4, 64), self.theme_value)
+            (216, y_4, 64), self.theme_value)
         self.presion_retropie_percent = mt3.ValueLabel(self.globales_card, 'presion_retropie_percent',
-            (80, y_4, 64), self.theme_value)
+            (296, y_4, 64), self.theme_value)
 
         # ----------------------------
         # Card Parámetros por Regiones
         # ----------------------------
         self.regiones_card = mt3.Card(self, 'regiones_card',
-            (8, 8, 208, 700), ('Antero-Posterior', 'Antero-Posterior'), 
+            (8, 8, 424, 384), ('Parámetros Regionales', 'Regional Parameters'), 
             self.theme_value, self.language_value)
 
         y_5 = 48
         self.talon_interno_label = mt3.ItemLabel(self.regiones_card, 'talon_interno_label',
-            (8, y_5), ('Talón Interno (KPa)', 'Inside Keel (KPa)'), self.theme_value, self.language_value)
+            (8, y_5), ('R1 Talón Interno (KPa)', 'R1 Inside Keel (KPa)'), self.theme_value, self.language_value)
+        self.talon_externo_label = mt3.ItemLabel(self.regiones_card, 'talon_externo_label',
+            (216, y_5), ('R2 Talón Externo (KPa)', 'R2 Outside Keel (KPa)'), self.theme_value, self.language_value)
+
         y_5 += 16
         self.left_talon_interno_value = mt3.ValueLabel(self.regiones_card, 'left_talon_interno_value',
             (8, y_5, 64), self.theme_value)
@@ -287,210 +338,160 @@ class App(QWidget):
         self.left_talon_interno_value.setStyleSheet(f'QLabel#{self.left_talon_interno_value.name} {{'
             f'border: 2px solid #FF0000; border-radius: 16 }}')
         self.right_talon_interno_value = mt3.ValueLabel(self.regiones_card, 'right_talon_interno_value',
-            (136, y_5, 64), self.theme_value)
+            (80, y_5, 64), self.theme_value)
         self.right_talon_interno_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.right_talon_interno_value.setStyleSheet(f'QLabel#{self.right_talon_interno_value.name} {{'
             f'border: 2px solid #0000FF; border-radius: 16 }}')
-
-        y_5 += 40
-        self.talon_externo_label = mt3.ItemLabel(self.regiones_card, 'talon_externo_label',
-            (8, y_5), ('Talón Externo (KPa)', 'Outside Keel (KPa)'), self.theme_value, self.language_value)
-        y_5 += 16
         self.left_talon_externo_value = mt3.ValueLabel(self.regiones_card, 'left_talon_externo_value',
-            (8, y_5, 64), self.theme_value)
+            (216, y_5, 64), self.theme_value)
         self.left_talon_externo_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.left_talon_externo_value.setStyleSheet(f'QLabel#{self.left_talon_externo_value.name} {{'
             f'border: 2px solid #FF0000; border-radius: 16 }}')
         self.right_talon_externo_value = mt3.ValueLabel(self.regiones_card, 'right_talon_externo_value',
-            (136, y_5, 64), self.theme_value)
+            (296, y_5, 64), self.theme_value)
         self.right_talon_externo_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.right_talon_externo_value.setStyleSheet(f'QLabel#{self.right_talon_externo_value.name} {{'
             f'border: 2px solid #0000FF; border-radius: 16 }}')
 
         y_5 += 40
         self.mediopie_interno_label = mt3.ItemLabel(self.regiones_card, 'mediopie_interno_label',
-            (8, y_5), ('RMS (mm)', 'RMS (mm)'), self.theme_value, self.language_value)
+            (8, y_5), ('R3 Mediopié Interno (KPa)', 'R3 Inside Midfoot (KPa)'), self.theme_value, self.language_value)
+        self.mediopie_externo_label = mt3.ItemLabel(self.regiones_card, 'mediopie_externo_label',
+            (216, y_5), ('R4 Mediopié Externo (KPa)', 'R4 Outside Midfoot (KPa)'), self.theme_value, self.language_value)
+
         y_5 += 16
-        self.left_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'left_ap_rms_value',
+        self.left_mediopie_interno_value = mt3.ValueLabel(self.regiones_card, 'left_mediopie_interno_value',
             (8, y_5, 64), self.theme_value)
-        self.left_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.left_ap_rms_value.setStyleSheet(f'QLabel#{self.left_ap_rms_value.name} {{'
+        self.left_mediopie_interno_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_mediopie_interno_value.setStyleSheet(f'QLabel#{self.left_mediopie_interno_value.name} {{'
             f'border: 2px solid #FF0000; border-radius: 16 }}')
-        self.right_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'right_ap_rms_value',
-            (136, y_5, 64), self.theme_value)
-        self.right_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.right_ap_rms_value.setStyleSheet(f'QLabel#{self.right_ap_rms_value.name} {{'
+        self.right_mediopie_interno_value = mt3.ValueLabel(self.regiones_card, 'right_mediopie_interno_value',
+            (80, y_5, 64), self.theme_value)
+        self.right_mediopie_interno_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_mediopie_interno_value.setStyleSheet(f'QLabel#{self.right_mediopie_interno_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+        self.left_mediopie_externo_value = mt3.ValueLabel(self.regiones_card, 'left_mediopie_externo_value',
+            (216, y_5, 64), self.theme_value)
+        self.left_mediopie_externo_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_mediopie_externo_value.setStyleSheet(f'QLabel#{self.left_mediopie_externo_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_mediopie_externo_value = mt3.ValueLabel(self.regiones_card, 'right_mediopie_externo_value',
+            (296, y_5, 64), self.theme_value)
+        self.right_mediopie_externo_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_mediopie_externo_value.setStyleSheet(f'QLabel#{self.right_mediopie_externo_value.name} {{'
             f'border: 2px solid #0000FF; border-radius: 16 }}')
 
         y_5 += 40
-        self.ap_vel_label = mt3.ItemLabel(self.regiones_card, 'ap_vel_label',
-            (8, y_5), ('Velocidad Media (mm/s)', 'Mean Velocity (mm/s)'), self.theme_value, self.language_value)
+        self.metatarsiano_1_label = mt3.ItemLabel(self.regiones_card, 'metatarsiano_1_label',
+            (8, y_5), ('R5 1ra Cabeza Metatarsiano (KPa)', 'R5 1st Metatarsal Head (KPa)'), self.theme_value, self.language_value)
+        self.metatarsiano_2_label = mt3.ItemLabel(self.regiones_card, 'metatarsiano_2_label',
+            (216, y_5), ('R6 2da Cabeza Metatarsiano (KPa)', 'R6 2nd Metatarsal Head (KPa)'), self.theme_value, self.language_value)
+
         y_5 += 16
-        self.left_ap_vel_value = mt3.ValueLabel(self.regiones_card, 'left_ap_vel_value',
+        self.left_metatarsiano_1_value = mt3.ValueLabel(self.regiones_card, 'left_metatarsiano_1_value',
             (8, y_5, 64), self.theme_value)
-        self.left_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.left_ap_vel_value.setStyleSheet(f'QLabel#{self.left_ap_vel_value.name} {{'
+        self.left_metatarsiano_1_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_metatarsiano_1_value.setStyleSheet(f'QLabel#{self.left_metatarsiano_1_value.name} {{'
             f'border: 2px solid #FF0000; border-radius: 16 }}')
-        self.right_ap_vel_value = mt3.ValueLabel(self.regiones_card, 'right_ap_vel_value',
-            (136, y_5, 64), self.theme_value)
-        self.right_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.right_ap_vel_value.setStyleSheet(f'QLabel#{self.right_ap_vel_value.name} {{'
+        self.right_metatarsiano_1_value = mt3.ValueLabel(self.regiones_card, 'right_metatarsiano_1_value',
+            (80, y_5, 64), self.theme_value)
+        self.right_metatarsiano_1_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_metatarsiano_1_value.setStyleSheet(f'QLabel#{self.right_metatarsiano_1_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+        self.left_metatarsiano_2_value = mt3.ValueLabel(self.regiones_card, 'left_metatarsiano_2_value',
+            (216, y_5, 64), self.theme_value)
+        self.left_metatarsiano_2_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_metatarsiano_2_value.setStyleSheet(f'QLabel#{self.left_metatarsiano_2_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_metatarsiano_2_value = mt3.ValueLabel(self.regiones_card, 'right_metatarsiano_2_value',
+            (296, y_5, 64), self.theme_value)
+        self.right_metatarsiano_2_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_metatarsiano_2_value.setStyleSheet(f'QLabel#{self.right_metatarsiano_2_value.name} {{'
             f'border: 2px solid #0000FF; border-radius: 16 }}')
 
         y_5 += 40
-        self.ap_rms_label = mt3.ItemLabel(self.regiones_card, 'ap_rms_label',
-            (8, y_5), ('RMS (mm)', 'RMS (mm)'), self.theme_value, self.language_value)
+        self.metatarsiano_3_label = mt3.ItemLabel(self.regiones_card, 'metatarsiano_3_label',
+            (8, y_5), ('R7 3ra Cabeza Metatarsiano (KPa)', 'R7 3rd Metatarsal Head (KPa)'), self.theme_value, self.language_value)
+        self.metatarsiano_4_label = mt3.ItemLabel(self.regiones_card, 'metatarsiano_4_label',
+            (216, y_5), ('R8 4ta Cabeza Metatarsiano (KPa)', 'R8 4th Metatarsal Head (KPa)'), self.theme_value, self.language_value)
+
         y_5 += 16
-        self.left_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'left_ap_rms_value',
+        self.left_metatarsiano_3_value = mt3.ValueLabel(self.regiones_card, 'left_metatarsiano_3_value',
             (8, y_5, 64), self.theme_value)
-        self.left_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.left_ap_rms_value.setStyleSheet(f'QLabel#{self.left_ap_rms_value.name} {{'
+        self.left_metatarsiano_3_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_metatarsiano_3_value.setStyleSheet(f'QLabel#{self.left_metatarsiano_3_value.name} {{'
             f'border: 2px solid #FF0000; border-radius: 16 }}')
-        self.right_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'right_ap_rms_value',
-            (136, y_5, 64), self.theme_value)
-        self.right_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.right_ap_rms_value.setStyleSheet(f'QLabel#{self.right_ap_rms_value.name} {{'
+        self.right_metatarsiano_3_value = mt3.ValueLabel(self.regiones_card, 'right_metatarsiano_3_value',
+            (80, y_5, 64), self.theme_value)
+        self.right_metatarsiano_3_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_metatarsiano_3_value.setStyleSheet(f'QLabel#{self.right_metatarsiano_3_value.name} {{'
             f'border: 2px solid #0000FF; border-radius: 16 }}')
-            
-        y_5 += 40
-        self.ap_vel_label = mt3.ItemLabel(self.regiones_card, 'ap_vel_label',
-            (8, y_5), ('Velocidad Media (mm/s)', 'Mean Velocity (mm/s)'), self.theme_value, self.language_value)
-        y_5 += 16
-        self.left_ap_vel_value = mt3.ValueLabel(self.regiones_card, 'left_ap_vel_value',
-            (8, y_5, 64), self.theme_value)
-        self.left_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.left_ap_vel_value.setStyleSheet(f'QLabel#{self.left_ap_vel_value.name} {{'
+        self.left_metatarsiano_4_value = mt3.ValueLabel(self.regiones_card, 'left_metatarsiano_4_value',
+            (216, y_5, 64), self.theme_value)
+        self.left_metatarsiano_4_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_metatarsiano_4_value.setStyleSheet(f'QLabel#{self.left_metatarsiano_4_value.name} {{'
             f'border: 2px solid #FF0000; border-radius: 16 }}')
-        self.right_ap_vel_value = mt3.ValueLabel(self.regiones_card, 'right_ap_vel_value',
-            (136, y_5, 64), self.theme_value)
-        self.right_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.right_ap_vel_value.setStyleSheet(f'QLabel#{self.right_ap_vel_value.name} {{'
+        self.right_metatarsiano_4_value = mt3.ValueLabel(self.regiones_card, 'right_metatarsiano_4_value',
+            (296, y_5, 64), self.theme_value)
+        self.right_metatarsiano_4_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_metatarsiano_4_value.setStyleSheet(f'QLabel#{self.right_metatarsiano_4_value.name} {{'
             f'border: 2px solid #0000FF; border-radius: 16 }}')
 
         y_5 += 40
-        self.ap_rms_label = mt3.ItemLabel(self.regiones_card, 'ap_rms_label',
-            (8, y_5), ('RMS (mm)', 'RMS (mm)'), self.theme_value, self.language_value)
+        self.metatarsiano_5_label = mt3.ItemLabel(self.regiones_card, 'metatarsiano_5_label',
+            (8, y_5), ('R9 5ta Cabeza Metatarsiano (KPa)', 'R9 5th Metatarsal Head (KPa)'), self.theme_value, self.language_value)
+        self.dedo_1_label = mt3.ItemLabel(self.regiones_card, 'dedo_1_label',
+            (216, y_5), ('R10 1er Dedo (KPa)', 'R10 1st Toe (KPa)'), self.theme_value, self.language_value)
+
         y_5 += 16
-        self.left_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'left_ap_rms_value',
+        self.left_metatarsiano_5_value = mt3.ValueLabel(self.regiones_card, 'left_metatarsiano_5_value',
             (8, y_5, 64), self.theme_value)
-        self.left_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.left_ap_rms_value.setStyleSheet(f'QLabel#{self.left_ap_rms_value.name} {{'
+        self.left_metatarsiano_5_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_metatarsiano_5_value.setStyleSheet(f'QLabel#{self.left_metatarsiano_5_value.name} {{'
             f'border: 2px solid #FF0000; border-radius: 16 }}')
-        self.right_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'right_ap_rms_value',
-            (136, y_5, 64), self.theme_value)
-        self.right_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.right_ap_rms_value.setStyleSheet(f'QLabel#{self.right_ap_rms_value.name} {{'
+        self.right_metatarsiano_5_value = mt3.ValueLabel(self.regiones_card, 'right_metatarsiano_5_value',
+            (80, y_5, 64), self.theme_value)
+        self.right_metatarsiano_5_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_metatarsiano_5_value.setStyleSheet(f'QLabel#{self.right_metatarsiano_5_value.name} {{'
             f'border: 2px solid #0000FF; border-radius: 16 }}')
-            
-        y_5 += 40
-        self.ap_vel_label = mt3.ItemLabel(self.regiones_card, 'ap_vel_label',
-            (8, y_5), ('Velocidad Media (mm/s)', 'Mean Velocity (mm/s)'), self.theme_value, self.language_value)
-        y_5 += 16
-        self.left_ap_vel_value = mt3.ValueLabel(self.regiones_card, 'left_ap_vel_value',
-            (8, y_5, 64), self.theme_value)
-        self.left_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.left_ap_vel_value.setStyleSheet(f'QLabel#{self.left_ap_vel_value.name} {{'
+        self.left_dedo_1_value = mt3.ValueLabel(self.regiones_card, 'left_dedo_1_value',
+            (216, y_5, 64), self.theme_value)
+        self.left_dedo_1_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_dedo_1_value.setStyleSheet(f'QLabel#{self.left_dedo_1_value.name} {{'
             f'border: 2px solid #FF0000; border-radius: 16 }}')
-        self.right_ap_vel_value = mt3.ValueLabel(self.regiones_card, 'right_ap_vel_value',
-            (136, y_5, 64), self.theme_value)
-        self.right_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.right_ap_vel_value.setStyleSheet(f'QLabel#{self.right_ap_vel_value.name} {{'
+        self.right_dedo_1_value = mt3.ValueLabel(self.regiones_card, 'right_dedo_1_value',
+            (296, y_5, 64), self.theme_value)
+        self.right_dedo_1_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_dedo_1_value.setStyleSheet(f'QLabel#{self.right_dedo_1_value.name} {{'
             f'border: 2px solid #0000FF; border-radius: 16 }}')
 
         y_5 += 40
-        self.ap_rms_label = mt3.ItemLabel(self.regiones_card, 'ap_rms_label',
-            (8, y_5), ('RMS (mm)', 'RMS (mm)'), self.theme_value, self.language_value)
+        self.dedo_2_label = mt3.ItemLabel(self.regiones_card, 'dedo_2_label',
+            (8, y_5), ('R11 2do Dedo (KPa)', 'R11 2nd Toe (KPa)'), self.theme_value, self.language_value)
+        self.dedo_3_5_label = mt3.ItemLabel(self.regiones_card, 'dedo_3_5_label',
+            (216, y_5), ('R12 3er-5to Dedos (KPa)', 'R12 3rd-5th Toes (KPa)'), self.theme_value, self.language_value)
+
         y_5 += 16
-        self.left_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'left_ap_rms_value',
+        self.left_dedo_2_value = mt3.ValueLabel(self.regiones_card, 'left_dedo_2_value',
             (8, y_5, 64), self.theme_value)
-        self.left_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.left_ap_rms_value.setStyleSheet(f'QLabel#{self.left_ap_rms_value.name} {{'
+        self.left_dedo_2_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_dedo_2_value.setStyleSheet(f'QLabel#{self.left_dedo_2_value.name} {{'
             f'border: 2px solid #FF0000; border-radius: 16 }}')
-        self.right_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'right_ap_rms_value',
-            (136, y_5, 64), self.theme_value)
-        self.right_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.right_ap_rms_value.setStyleSheet(f'QLabel#{self.right_ap_rms_value.name} {{'
+        self.right_dedo_2_value = mt3.ValueLabel(self.regiones_card, 'right_dedo_2_value',
+            (80, y_5, 64), self.theme_value)
+        self.right_dedo_2_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_dedo_2_value.setStyleSheet(f'QLabel#{self.right_dedo_2_value.name} {{'
             f'border: 2px solid #0000FF; border-radius: 16 }}')
-            
-        y_5 += 40
-        self.ap_vel_label = mt3.ItemLabel(self.regiones_card, 'ap_vel_label',
-            (8, y_5), ('Velocidad Media (mm/s)', 'Mean Velocity (mm/s)'), self.theme_value, self.language_value)
-        y_5 += 16
-        self.left_ap_vel_value = mt3.ValueLabel(self.regiones_card, 'left_ap_vel_value',
-            (8, y_5, 64), self.theme_value)
-        self.left_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.left_ap_vel_value.setStyleSheet(f'QLabel#{self.left_ap_vel_value.name} {{'
+        self.left_dedo_3_5_value = mt3.ValueLabel(self.regiones_card, 'left_dedo_3_5_value',
+            (216, y_5, 64), self.theme_value)
+        self.left_dedo_3_5_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_dedo_3_5_value.setStyleSheet(f'QLabel#{self.left_dedo_3_5_value.name} {{'
             f'border: 2px solid #FF0000; border-radius: 16 }}')
-        self.right_ap_vel_value = mt3.ValueLabel(self.regiones_card, 'right_ap_vel_value',
-            (136, y_5, 64), self.theme_value)
-        self.right_ap_vel_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.right_ap_vel_value.setStyleSheet(f'QLabel#{self.right_ap_vel_value.name} {{'
+        self.right_dedo_3_5_value = mt3.ValueLabel(self.regiones_card, 'right_dedo_3_5_value',
+            (296, y_5, 64), self.theme_value)
+        self.right_dedo_3_5_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_dedo_3_5_value.setStyleSheet(f'QLabel#{self.right_dedo_3_5_value.name} {{'
             f'border: 2px solid #0000FF; border-radius: 16 }}')
-
-        y_5 += 40
-        self.ap_rms_label = mt3.ItemLabel(self.regiones_card, 'ap_rms_label',
-            (8, y_5), ('RMS (mm)', 'RMS (mm)'), self.theme_value, self.language_value)
-        y_5 += 16
-        self.left_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'left_ap_rms_value',
-            (8, y_5, 64), self.theme_value)
-        self.left_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.left_ap_rms_value.setStyleSheet(f'QLabel#{self.left_ap_rms_value.name} {{'
-            f'border: 2px solid #FF0000; border-radius: 16 }}')
-        self.right_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'right_ap_rms_value',
-            (136, y_5, 64), self.theme_value)
-        self.right_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.right_ap_rms_value.setStyleSheet(f'QLabel#{self.right_ap_rms_value.name} {{'
-            f'border: 2px solid #0000FF; border-radius: 16 }}')
-
-        y_5 += 40
-        self.ap_rms_label = mt3.ItemLabel(self.regiones_card, 'ap_rms_label',
-            (8, y_5), ('RMS (mm)', 'RMS (mm)'), self.theme_value, self.language_value)
-        y_5 += 16
-        self.left_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'left_ap_rms_value',
-            (8, y_5, 64), self.theme_value)
-        self.left_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.left_ap_rms_value.setStyleSheet(f'QLabel#{self.left_ap_rms_value.name} {{'
-            f'border: 2px solid #FF0000; border-radius: 16 }}')
-        self.right_ap_rms_value = mt3.ValueLabel(self.regiones_card, 'right_ap_rms_value',
-            (136, y_5, 64), self.theme_value)
-        self.right_ap_rms_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.right_ap_rms_value.setStyleSheet(f'QLabel#{self.right_ap_rms_value.name} {{'
-            f'border: 2px solid #0000FF; border-radius: 16 }}')
-
-        # -------------
-        # Card Opciones
-        # -------------
-        self.opciones_card = mt3.Card(self, 'opciones_card',
-            (8, 8, 228, 168), ('Opciones', 'Options'), 
-            self.theme_value, self.language_value)
-
-        y_8 = 48
-        self.foot_label = mt3.ItemLabel(self.opciones_card, 'foot_label',
-            (8, y_8), ('Señal del Pie', 'Foot Signal'), self.theme_value, self.language_value)
-        
-        y_8 += 20
-        self.left_foot_chip = mt3.Chip(self.opciones_card, 'left_foot_chip',
-            (8, y_8, 124), ('Pie Izquierdo', 'Left Foot'), ('done.png','none.png'), 
-            False, self.theme_value, self.language_value)
-        # self.left_foot_chip.clicked.connect(self.on_left_foot_chip_clicked)
-
-        y_8 += 40
-        self.center_chip = mt3.Chip(self.opciones_card, 'center_chip',
-            (8, y_8, 144), ('Centro de Presión', 'Center of Pressure'), ('done.png','none.png'), 
-            False, self.theme_value, self.language_value)
-        # self.center_chip.clicked.connect(self.on_center_chip_clicked)
-
-        y_8 += 40
-        self.right_foot_chip = mt3.Chip(self.opciones_card, 'right_foot_chip',
-            (8, y_8, 124), ('Pie Derecho', 'Right Foot'), ('done.png','none.png'), 
-            False, self.theme_value, self.language_value)
-        # self.right_foot_chip.clicked.connect(self.on_right_foot_chip_clicked)
-
-        y_8 += 40
-        self.other_foot_chip = mt3.Chip(self.opciones_card, 'other_foot_chip',
-            (8, y_8, 124), ('Pie Derecho', 'Right Foot'), ('done.png','none.png'), 
-            False, self.theme_value, self.language_value)
-        # self.other_foot_chip.clicked.connect(self.on_other_foot_chip_clicked)
 
     #     # -------------
     #     # Base de Datos
@@ -536,12 +537,37 @@ class App(QWidget):
 
         self.presion_plot_card.language_text(index)
 
+        self.opciones_card.language_text(index)
+        self.opciones_plot_label.language_text(index)
+        self.regiones_chip.language_text(index)
+        self.presion_pico_local_chip.language_text(index)
+        self.baricentros_chip.language_text(index)
+        self.distribucion_chip.language_text(index)
+        self.opciones_results_label.language_text(index)
+        self.picos_button.language_text(index)
+        self.means_button.language_text(index)
+        self.areas_button.language_text(index)
+
         self.globales_card.language_text(index)
         self.presion_total_label.language_text(index)
         self.presion_left_label.language_text(index)
         self.presion_right_label.language_text(index)
         self.presion_antepie_label.language_text(index)
         self.presion_retropie_label.language_text(index)
+
+        self.regiones_card.language_text(index)
+        self.talon_interno_label.language_text(index)
+        self.talon_externo_label.language_text(index)
+        self.mediopie_interno_label.language_text(index)
+        self.mediopie_externo_label.language_text(index)
+        self.metatarsiano_1_label.language_text(index)
+        self.metatarsiano_2_label.language_text(index)
+        self.metatarsiano_3_label.language_text(index)
+        self.metatarsiano_4_label.language_text(index)
+        self.metatarsiano_5_label.language_text(index)
+        self.dedo_1_label.language_text(index)
+        self.dedo_2_label.language_text(index)
+        self.dedo_3_5_label.language_text(index)
 
         self.settings.setValue('language', str(index))
         self.language_value = int(self.settings.value('language'))
@@ -619,6 +645,17 @@ class App(QWidget):
     #             self.lat_text_2 = self.somatotipo_plot.axes.text(self.data_lat_t_min, self.data_lat_min, f'{self.data_lat_min:.2f}', color='#E5E9F0')
     #     self.somatotipo_plot.draw()
 
+        self.opciones_card.apply_styleSheet(state)
+        self.opciones_plot_label.apply_styleSheet(state)
+        self.regiones_chip.apply_styleSheet(state)
+        self.presion_pico_local_chip.apply_styleSheet(state)
+        self.baricentros_chip.apply_styleSheet(state)
+        self.distribucion_chip.apply_styleSheet(state)
+        self.opciones_results_label.apply_styleSheet(state)
+        self.picos_button.apply_styleSheet(state)
+        self.means_button.apply_styleSheet(state)
+        self.areas_button.apply_styleSheet(state)
+
         self.globales_card.apply_styleSheet(state)
         self.presion_total_label.apply_styleSheet(state)
         self.presion_total_value.apply_styleSheet(state)
@@ -636,56 +673,164 @@ class App(QWidget):
         self.presion_retropie_value.apply_styleSheet(state)
         self.presion_retropie_percent.apply_styleSheet(state)
      
+        self.regiones_card.apply_styleSheet(state)
+        self.talon_interno_label.apply_styleSheet(state)
+        self.talon_externo_label.apply_styleSheet(state)
+        self.left_talon_interno_value.apply_styleSheet(state)
+        self.right_talon_interno_value.apply_styleSheet(state)
+        self.left_talon_externo_value.apply_styleSheet(state)
+        self.right_talon_externo_value.apply_styleSheet(state)
+        self.mediopie_interno_label.apply_styleSheet(state)
+        self.mediopie_externo_label.apply_styleSheet(state)
+        self.left_mediopie_interno_value.apply_styleSheet(state)
+        self.right_mediopie_interno_value.apply_styleSheet(state)
+        self.left_mediopie_externo_value.apply_styleSheet(state)
+        self.right_mediopie_externo_value.apply_styleSheet(state)
+        self.metatarsiano_1_label.apply_styleSheet(state)
+        self.metatarsiano_2_label.apply_styleSheet(state)
+        self.left_metatarsiano_1_value.apply_styleSheet(state)
+        self.right_metatarsiano_1_value.apply_styleSheet(state)
+        self.left_metatarsiano_2_value.apply_styleSheet(state)
+        self.right_metatarsiano_2_value.apply_styleSheet(state)
+        self.metatarsiano_3_label.apply_styleSheet(state)
+        self.metatarsiano_4_label.apply_styleSheet(state)
+        self.left_metatarsiano_3_value.apply_styleSheet(state)
+        self.right_metatarsiano_3_value.apply_styleSheet(state)
+        self.left_metatarsiano_4_value.apply_styleSheet(state)
+        self.right_metatarsiano_4_value.apply_styleSheet(state)
+        self.metatarsiano_5_label.apply_styleSheet(state)
+        self.dedo_1_label.apply_styleSheet(state)
+        self.left_metatarsiano_5_value.apply_styleSheet(state)
+        self.right_metatarsiano_5_value.apply_styleSheet(state)
+        self.left_dedo_1_value.apply_styleSheet(state)
+        self.right_dedo_1_value.apply_styleSheet(state)
+        self.dedo_2_label.apply_styleSheet(state)
+        self.dedo_3_5_label.apply_styleSheet(state)
+        self.left_dedo_2_value.apply_styleSheet(state)
+        self.right_dedo_2_value.apply_styleSheet(state)
+        self.left_dedo_3_5_value.apply_styleSheet(state)
+        self.right_dedo_3_5_value.apply_styleSheet(state)
 
+        self.left_talon_interno_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_talon_interno_value.setStyleSheet(f'QLabel#{self.left_talon_interno_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_talon_interno_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_talon_interno_value.setStyleSheet(f'QLabel#{self.right_talon_interno_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+        self.left_talon_externo_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_talon_externo_value.setStyleSheet(f'QLabel#{self.left_talon_externo_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_talon_externo_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_talon_externo_value.setStyleSheet(f'QLabel#{self.right_talon_externo_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+        self.left_mediopie_interno_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_mediopie_interno_value.setStyleSheet(f'QLabel#{self.left_mediopie_interno_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_mediopie_interno_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_mediopie_interno_value.setStyleSheet(f'QLabel#{self.right_mediopie_interno_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+        self.left_mediopie_externo_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_mediopie_externo_value.setStyleSheet(f'QLabel#{self.left_mediopie_externo_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_mediopie_externo_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_mediopie_externo_value.setStyleSheet(f'QLabel#{self.right_mediopie_externo_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+        self.left_metatarsiano_1_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_metatarsiano_1_value.setStyleSheet(f'QLabel#{self.left_metatarsiano_1_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_metatarsiano_1_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_metatarsiano_1_value.setStyleSheet(f'QLabel#{self.right_metatarsiano_1_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+        self.left_metatarsiano_2_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_metatarsiano_2_value.setStyleSheet(f'QLabel#{self.left_metatarsiano_2_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_metatarsiano_2_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_metatarsiano_2_value.setStyleSheet(f'QLabel#{self.right_metatarsiano_2_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+        self.left_metatarsiano_3_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_metatarsiano_3_value.setStyleSheet(f'QLabel#{self.left_metatarsiano_3_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_metatarsiano_3_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_metatarsiano_3_value.setStyleSheet(f'QLabel#{self.right_metatarsiano_3_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+        self.left_metatarsiano_4_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_metatarsiano_4_value.setStyleSheet(f'QLabel#{self.left_metatarsiano_4_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_metatarsiano_4_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_metatarsiano_4_value.setStyleSheet(f'QLabel#{self.right_metatarsiano_4_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+        self.left_metatarsiano_5_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_metatarsiano_5_value.setStyleSheet(f'QLabel#{self.left_metatarsiano_5_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_metatarsiano_5_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_metatarsiano_5_value.setStyleSheet(f'QLabel#{self.right_metatarsiano_5_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+        self.left_dedo_1_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_dedo_1_value.setStyleSheet(f'QLabel#{self.left_dedo_1_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_dedo_1_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_dedo_1_value.setStyleSheet(f'QLabel#{self.right_dedo_1_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+        self.left_dedo_2_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_dedo_2_value.setStyleSheet(f'QLabel#{self.left_dedo_2_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_dedo_2_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_dedo_2_value.setStyleSheet(f'QLabel#{self.right_dedo_2_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+        self.left_dedo_3_5_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.left_dedo_3_5_value.setStyleSheet(f'QLabel#{self.left_dedo_3_5_value.name} {{'
+            f'border: 2px solid #FF0000; border-radius: 16 }}')
+        self.right_dedo_3_5_value.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.right_dedo_3_5_value.setStyleSheet(f'QLabel#{self.right_dedo_3_5_value.name} {{'
+            f'border: 2px solid #0000FF; border-radius: 16 }}')
+
+        self.settings.setValue('theme', f'{state}')
+        self.theme_value = eval(self.settings.value('theme'))
+
+
+    def on_database_button_clicked(self) -> None:
+        """ Database button to configure the database """
+        self.db_info = database.Database()
+        self.db_info.exec()
         
+        if self.db_info.database_data:
+            self.patientes_list = backend.create_db('pacientes')
+            self.estudios_list = backend.create_db('estudios')
 
-    #     self.settings.setValue('theme', f'{state}')
-    #     self.theme_value = eval(self.settings.value('theme'))
+            for data in self.patientes_list:
+                self.pacientes_menu.addItem(str(data[4]))
+            self.pacientes_menu.setCurrentIndex(-1)
 
+            self.pacientes_menu.setEnabled(True)
+            self.paciente_add_button.setEnabled(True)
+            self.paciente_edit_button.setEnabled(True)
+            self.paciente_del_button.setEnabled(True)
 
-    # def on_database_button_clicked(self) -> None:
-    #     """ Database button to configure the database """
-    #     self.db_info = database.Database()
-    #     self.db_info.exec()
-        
-    #     if self.db_info.database_data:
-    #         self.patientes_list = backend.create_db('pacientes')
-    #         self.estudios_list = backend.create_db('estudios')
-
-    #         for data in self.patientes_list:
-    #             self.pacientes_menu.addItem(str(data[4]))
-    #         self.pacientes_menu.setCurrentIndex(-1)
-
-    #         self.pacientes_menu.setEnabled(True)
-    #         self.paciente_add_button.setEnabled(True)
-    #         self.paciente_edit_button.setEnabled(True)
-    #         self.paciente_del_button.setEnabled(True)
-
-    #         if self.language_value == 0:
-    #             QtWidgets.QMessageBox.information(self, 'Datos Guardados', 'Base de datos configurada')
-    #         elif self.language_value == 1:
-    #             QtWidgets.QMessageBox.information(self, 'Data Saved', 'Database configured')
-    #     else:
-    #         if self.language_value == 0:
-    #             QtWidgets.QMessageBox.critical(self, 'Error de Datos', 'No se dio información de la base de datos')
-    #         elif self.language_value == 1:
-    #             QtWidgets.QMessageBox.critical(self, 'Data Error', 'No information on the database was given')
+            if self.language_value == 0:
+                QtWidgets.QMessageBox.information(self, 'Datos Guardados', 'Base de datos configurada')
+            elif self.language_value == 1:
+                QtWidgets.QMessageBox.information(self, 'Data Saved', 'Database configured')
+        else:
+            if self.language_value == 0:
+                QtWidgets.QMessageBox.critical(self, 'Error de Datos', 'No se dio información de la base de datos')
+            elif self.language_value == 1:
+                QtWidgets.QMessageBox.critical(self, 'Data Error', 'No information on the database was given')
 
 
-    # def on_manual_button_clicked(self) -> None:
-    #     """ Manual button to open manual window """
-    #     return 0
+    def on_manual_button_clicked(self) -> None:
+        """ Manual button to open manual window """
+        return 0
 
 
-    # def on_about_button_clicked(self) -> None:
-    #     """ About app button to open about app window dialog """
-    #     self.about = backend.AboutApp()
-    #     self.about.exec()
+    def on_about_button_clicked(self) -> None:
+        """ About app button to open about app window dialog """
+        self.about = backend.AboutApp()
+        self.about.exec()
 
 
-    # def on_aboutQt_button_clicked(self) -> None:
-    #     """ About Qt button to open about Qt window dialog """
-    #     backend.about_qt_dialog(self, self.language_value)
+    def on_aboutQt_button_clicked(self) -> None:
+        """ About Qt button to open about Qt window dialog """
+        backend.about_qt_dialog(self, self.language_value)
         
     
     def resizeEvent(self, a0: QtGui.QResizeEvent) -> None:
@@ -702,41 +847,39 @@ class App(QWidget):
         self.about_button.move(width - 96, 8)
         self.aboutQt_button.move(width - 56, 8)
 
-        self.presion_plot_card.setGeometry(196, 64, width - 636, int(height * 0.75))
+        self.presion_plot_card.setGeometry(196, 64, width - 636, int(height - 248))
         self.presion_plot_card.title.resize(width - 652, 32)
         # self.somatotipo_plot.setGeometry(8, 48, self.presion_plot_card.width()-16, self.presion_plot_card.height()-56)
+       
+        self.opciones_card.setGeometry(196, self.presion_plot_card.height()+72, width - 636, 168)
+        self.globales_card.setGeometry(width - 432, 64, 424, 216)
+        self.regiones_card.setGeometry(width - 432, 288, 424, 384)
         
-        self.globales_card.setGeometry(width - 432, 64, 208, 328)
-        self.regiones_card.setGeometry(width - 216, 64, 208, 600)
-        self.opciones_card.setGeometry(width - 432, 400, 208, 228)
 
         return super().resizeEvent(a0)
 
-    # # ------------------
-    # # Funciones Paciente
-    # # ------------------
-    # def on_paciente_add_button_clicked(self) -> None:
-    #     """ Add patient button to the database """
-    #     self.patient_window = patient.Patient()
-    #     self.patient_window.exec()
+    # ------------------
+    # Funciones Paciente
+    # ------------------
+    def on_paciente_add_button_clicked(self) -> None:
+        """ Add patient button to the database """
+        self.patient_window = patient.Patient()
+        self.patient_window.exec()
         
-    #     if self.patient_window.patient_data:
-    #         if self.patient_window.patient_data['sex'] == 'F':
-    #             self.sex_label.set_icon('woman', self.theme_value)
-    #         elif self.patient_window.patient_data['sex'] == 'M':
-    #             self.sex_label.set_icon('man', self.theme_value)
+        if self.patient_window.patient_data:
+            if self.patient_window.patient_data['sex'] == 'F':
+                self.sex_label.set_icon('woman', self.theme_value)
+            elif self.patient_window.patient_data['sex'] == 'M':
+                self.sex_label.set_icon('man', self.theme_value)
 
-    #         self.apellido_value.setText(self.patient_window.patient_data['last_name'])
-    #         self.nombre_value.setText(self.patient_window.patient_data['first_name'])
-    #         self.id_value.setText(f'{self.patient_window.patient_data["id_type"]} {self.patient_window.patient_data["id"]}')
-    #         self.fecha_value.setText(self.patient_window.patient_data['birth_date'])
-    #         self.sex_value.setText(self.patient_window.patient_data['sex'])
-    #         self.peso_value.setText(f'{self.patient_window.patient_data["weight"]} {self.patient_window.patient_data["weight_unit"]}')
-    #         self.altura_value.setText(f'{self.patient_window.patient_data["height"]} {self.patient_window.patient_data["height_unit"]}')
-    #         self.bmi_value.setText(self.patient_window.patient_data['bmi'])
-
-    #         self.altura_value_meso.setText(f'{self.patient_window.patient_data["height"]}')
-    #         self.peso_value_ecto.setText(f'{self.patient_window.patient_data["weight"]}')
+            self.apellido_value.setText(self.patient_window.patient_data['last_name'])
+            self.nombre_value.setText(self.patient_window.patient_data['first_name'])
+            self.id_value.setText(f'{self.patient_window.patient_data["id_type"]} {self.patient_window.patient_data["id"]}')
+            self.fecha_value.setText(self.patient_window.patient_data['birth_date'])
+            self.sex_value.setText(self.patient_window.patient_data['sex'])
+            self.peso_value.setText(f'{self.patient_window.patient_data["weight"]} {self.patient_window.patient_data["weight_unit"]}')
+            self.altura_value.setText(f'{self.patient_window.patient_data["height"]} {self.patient_window.patient_data["height_unit"]}')
+            self.bmi_value.setText(self.patient_window.patient_data['bmi'])
 
     #         # -------------
     #         # Base de datos
