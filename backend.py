@@ -33,35 +33,90 @@ dark = {
     'on_surface': '#E5E9F0'
 }
 
-# class MPLCanvas(FigureCanvasQTAgg):
-#     def __init__(self, parent, theme: bool) -> None:
-#         """ Canvas settings for plotting signals """
-#         self.fig = Figure()
-#         self.axes = self.fig.add_subplot(111)
+class MPLCanvas(FigureCanvasQTAgg):
+    def __init__(self, parent, theme: bool) -> None:
+        """ Canvas settings for plotting signals """
+        self.fig = Figure()
+        self.axes = self.fig.add_subplot(111)
 
-#         FigureCanvasQTAgg.__init__(self, self.fig)
-#         self.setParent(parent)
+        FigureCanvasQTAgg.__init__(self, self.fig)
+        self.setParent(parent)
 
-#         self.apply_styleSheet(theme)
+        self.apply_styleSheet(theme)
 
-#     def apply_styleSheet(self, theme):
-#         self.fig.subplots_adjust(left=0.05, bottom=0.15, right=1, top=0.95, wspace=0, hspace=0)
-#         self.axes.spines['top'].set_visible(False)
-#         self.axes.spines['right'].set_visible(False)
-#         self.axes.spines['bottom'].set_visible(False)
-#         self.axes.spines['left'].set_visible(False)
-#         if theme:
-#             self.fig.set_facecolor(f'{light["surface"]}')
-#             self.axes.set_facecolor(f'{light["surface"]}')
-#             self.axes.xaxis.label.set_color(f'{light["on_surface"]}')
-#             self.axes.yaxis.label.set_color(f'{light["on_surface"]}')
-#             self.axes.tick_params(axis='both', colors=f'{light["on_surface"]}', labelsize=8)
-#         else:
-#             self.fig.set_facecolor(f'{dark["surface"]}')
-#             self.axes.set_facecolor(f'{dark["surface"]}')
-#             self.axes.xaxis.label.set_color(f'{dark["on_surface"]}')
-#             self.axes.yaxis.label.set_color(f'{dark["on_surface"]}')
-#             self.axes.tick_params(axis='both', colors=f'{dark["on_surface"]}', labelsize=8)
+    def apply_styleSheet(self, theme):
+        self.fig.subplots_adjust(left=0.05, bottom=0.15, right=1, top=0.95, wspace=0, hspace=0)
+        self.axes.spines['top'].set_visible(False)
+        self.axes.spines['right'].set_visible(False)
+        self.axes.spines['bottom'].set_visible(False)
+        self.axes.spines['left'].set_visible(False)
+        if theme:
+            self.fig.set_facecolor(f'{light["surface"]}')
+            self.axes.set_facecolor(f'{light["surface"]}')
+            self.axes.xaxis.label.set_color(f'{light["on_surface"]}')
+            self.axes.yaxis.label.set_color(f'{light["on_surface"]}')
+            self.axes.tick_params(axis='both', colors=f'{light["on_surface"]}', labelsize=8)
+        else:
+            self.fig.set_facecolor(f'{dark["surface"]}')
+            self.axes.set_facecolor(f'{dark["surface"]}')
+            self.axes.xaxis.label.set_color(f'{dark["on_surface"]}')
+            self.axes.yaxis.label.set_color(f'{dark["on_surface"]}')
+            self.axes.tick_params(axis='both', colors=f'{dark["on_surface"]}', labelsize=8)
+
+# -----------------------
+# Extracción de la Imagen
+# -----------------------
+def extract(left_image_file: str, right_image_file: str) -> dict:
+    """ Extraction of pressure image from pressure data files 
+    
+    Parameters
+    ----------
+    left_image_file: str
+        Input data file path of left foot
+
+    right_image_file: str
+        Input data file path of right foot
+
+    Returns
+    -------
+    signals: dict
+        Lateral and antero-posterior signal data by feet
+    """
+    left_df = pd.read_csv(left_image_file, sep='\t', skiprows=43, encoding='ISO-8859-1')
+    right_df = pd.read_csv(right_image_file, sep='\t', skiprows=43, encoding='ISO-8859-1')
+
+    # # OCR
+    # image_left_limits = image.copy()
+    # image_left_limits = image_left_limits[ 144:315 , 108:513]
+    # left_ap_limits,left_lat_limits = image_ocr(image_left_limits)
+
+    # image_center_limits = image.copy()
+    # image_center_limits = image_center_limits[ 144:315 , 529:934]
+    # center_ap_limits,center_lat_limits = image_ocr(image_center_limits)
+
+    # image_right_limits = image.copy()
+    # image_right_limits = image_right_limits[ 144:315 , 949:1354]
+    # right_ap_limits,right_lat_limits = image_ocr(image_right_limits)
+
+  
+    # signals = {
+    #     'left_lateral_signal': left_lateral_signal,
+    #     'left_lateral_time': left_lateral_time,
+    #     'center_lateral_signal': center_lateral_signal,
+    #     'center_lateral_time': center_lateral_time,
+    #     'right_lateral_signal': right_lateral_signal,
+    #     'right_lateral_time': right_lateral_time,
+    #     'left_ap_signal': left_ap_signal,
+    #     'left_ap_time': left_ap_time,
+    #     'center_ap_signal': center_ap_signal,
+    #     'center_ap_time': center_ap_time,
+    #     'right_ap_signal': right_ap_signal,
+    #     'right_ap_time': right_ap_time
+    #     }
+
+    return signals
+
+
 
 
 # ---------------------------
