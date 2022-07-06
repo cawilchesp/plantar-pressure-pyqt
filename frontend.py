@@ -28,6 +28,7 @@ class App(QWidget):
         self.settings = QSettings(f'{sys.path[0]}/settings.ini', QSettings.Format.IniFormat)
         self.language_value = int(self.settings.value('language'))
         self.theme_value = eval(self.settings.value('theme'))
+        self.default_path = self.settings.value('default_path')
 
         self.idioma_dict = {0: ('ESP', 'SPA'), 1: ('ING', 'ENG')}
     
@@ -149,7 +150,7 @@ class App(QWidget):
         self.analisis_add_button = mt3.IconButton(self.analisis_card, 'analisis_add_button',
             (100, y_2), 'new.png', self.theme_value)
         self.analisis_add_button.setEnabled(False)
-        # self.analisis_add_button.clicked.connect(self.on_analisis_add_button_clicked)
+        self.analisis_add_button.clicked.connect(self.on_analisis_add_button_clicked)
 
         self.analisis_del_button = mt3.IconButton(self.analisis_card, 'analisis_del_button',
             (140, y_2), 'delete.png', self.theme_value)
@@ -216,7 +217,7 @@ class App(QWidget):
         self.presion_plot_card = mt3.Card(self, 'presion_plot_card',
             (196, 64, 900, 215), ('Mapa de Presiones Plantares','Plantar Pressures Map'), 
             self.theme_value, self.language_value)
-    #     self.somatotipo_plot = backend.MPLCanvas(self.presion_plot_card, self.theme_value)
+        self.somatotipo_plot = backend.MPLCanvas(self.presion_plot_card, self.theme_value)
 
         # -------------
         # Card Opciones
@@ -633,7 +634,7 @@ class App(QWidget):
 
         self.presion_plot_card.apply_styleSheet(state)
 
-    #     self.somatotipo_plot.apply_styleSheet(state)
+        self.somatotipo_plot.apply_styleSheet(state)
     #     if self.lat_text_1:
     #         self.lat_text_1.remove()
     #         self.lat_text_2.remove()
@@ -643,7 +644,7 @@ class App(QWidget):
     #         else:
     #             self.lat_text_1 = self.somatotipo_plot.axes.text(self.data_lat_t_max, self.data_lat_max, f'{self.data_lat_max:.2f}', color='#E5E9F0')
     #             self.lat_text_2 = self.somatotipo_plot.axes.text(self.data_lat_t_min, self.data_lat_min, f'{self.data_lat_min:.2f}', color='#E5E9F0')
-    #     self.somatotipo_plot.draw()
+        self.somatotipo_plot.draw()
 
         self.opciones_card.apply_styleSheet(state)
         self.opciones_plot_label.apply_styleSheet(state)
@@ -849,7 +850,7 @@ class App(QWidget):
 
         self.presion_plot_card.setGeometry(196, 64, width - 636, int(height - 248))
         self.presion_plot_card.title.resize(width - 652, 32)
-        # self.somatotipo_plot.setGeometry(8, 48, self.presion_plot_card.width()-16, self.presion_plot_card.height()-56)
+        self.somatotipo_plot.setGeometry(8, 48, self.presion_plot_card.width()-16, self.presion_plot_card.height()-56)
        
         self.opciones_card.setGeometry(196, self.presion_plot_card.height()+72, width - 636, 168)
         self.globales_card.setGeometry(width - 432, 64, 424, 216)
@@ -1097,14 +1098,20 @@ class App(QWidget):
     # -----------------
     # Funciones Estudio
     # -----------------
-    # def on_analisis_add_button_clicked(self) -> None:
-    #     """ Add analysis button to the database """
-    #     selected_file = QtWidgets.QFileDialog.getOpenFileName(None,
-    #             'Seleccione el archivo de datos', 'D:/Data/Asdhar Alonso/',
-    #             'Archivos de Datos (*.csv *.txt *.emt)')[0]
+    def on_analisis_add_button_clicked(self) -> None:
+        """ Add analysis button to the database """
+        selected_left_foot_file = QtWidgets.QFileDialog.getOpenFileName(None,
+                'Seleccione el archivo de datos del pie izquierdo', self.default_path,
+                'Archivos de Datos (*.apd)')[0]
 
-    #     if selected_file:
-    #         df = pd.read_csv(selected_file, sep='\t', skiprows=43, encoding='ISO-8859-1')
+        selected_right_foot_file = QtWidgets.QFileDialog.getOpenFileName(None,
+                'Seleccione el archivo de datos del pie derecho', self.default_path,
+                'Archivos de Datos (*.apd)')[0]
+
+        if selected_left_foot_file and selected_right_foot_file:
+            self.default_path = self.settings.setValue('default_path', str(Path(selected_left_foot_file).parent))
+
+            extracted_image = backend.extract(selected_left_foot_file, selected_right_foot_file)
 
     #         results = backend.analisis(df)
             
