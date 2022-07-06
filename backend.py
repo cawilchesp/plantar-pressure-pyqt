@@ -82,8 +82,15 @@ def extract(left_image_file: str, right_image_file: str) -> dict:
     signals: dict
         Lateral and antero-posterior signal data by feet
     """
-    left_df = pd.read_csv(left_image_file, sep='\t', skiprows=43, encoding='ISO-8859-1')
-    right_df = pd.read_csv(right_image_file, sep='\t', skiprows=43, encoding='ISO-8859-1')
+    left_df = pd.read_csv(left_image_file, sep='\t', skiprows=27, header=None, encoding='ISO-8859-1')
+    right_df = pd.read_csv(right_image_file, sep='\t', skiprows=27, header=None, encoding='ISO-8859-1')
+
+    pressure = np.zeros((48,48)) - 1
+    pressure[14:39,6:17] = np.array(left_df) * 10
+    pressure[14:39,33:44] = np.array(right_df) * 10
+    pressure = np.nan_to_num(pressure,False,-1)
+
+    print(pd.DataFrame(pressure))
 
     # # OCR
     # image_left_limits = image.copy()
@@ -114,7 +121,7 @@ def extract(left_image_file: str, right_image_file: str) -> dict:
     #     'right_ap_time': right_ap_time
     #     }
 
-    return signals
+    return pressure
 
 
 
