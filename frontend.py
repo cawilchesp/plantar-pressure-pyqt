@@ -10,6 +10,7 @@ from PyQt6.QtCore import QSettings, Qt
 
 import sys
 import pandas as pd
+import matplotlib.pyplot as plt
 from pathlib import Path
 
 import material3_components as mt3
@@ -1113,6 +1114,8 @@ class App(QWidget):
 
             extracted_image = backend.extract(selected_left_foot_file, selected_right_foot_file)
 
+
+
     #         results = backend.analisis(df)
             
     #         # ----------------
@@ -1127,8 +1130,9 @@ class App(QWidget):
     #         self.data_lat_min = results['lat_min']
     #         self.data_lat_t_min = results['lat_t_min']
 
-    #         self.lateral_plot.axes.cla()
-    #         self.lateral_plot.fig.subplots_adjust(left=0.05, bottom=0.15, right=1, top=0.95, wspace=0, hspace=0)
+            self.somatotipo_plot.axes.cla()
+            self.somatotipo_plot.fig.subplots_adjust(left=0.05, bottom=0.15, right=1, top=0.95, wspace=0, hspace=0)
+            self.somatotipo_plot.axes.imshow(extracted_image, cmap=plt.get_cmap('jet'))
     #         self.lateral_plot.axes.plot(data_t, data_lat, '#42A4F5')
     #         self.lateral_plot.axes.plot(self.data_lat_t_max, self.data_lat_max, marker="o", markersize=3, markeredgecolor='#FF2D55', markerfacecolor='#FF2D55')
     #         self.lateral_plot.axes.plot(self.data_lat_t_min, self.data_lat_min, marker="o", markersize=3, markeredgecolor='#FF2D55', markerfacecolor='#FF2D55')
@@ -1138,7 +1142,7 @@ class App(QWidget):
     #         else:
     #             self.lat_text_1 = self.lateral_plot.axes.text(self.data_lat_t_max, self.data_lat_max, f'{self.data_lat_max:.2f}', color='#E5E9F0')
     #             self.lat_text_2 = self.lateral_plot.axes.text(self.data_lat_t_min, self.data_lat_min, f'{self.data_lat_min:.2f}', color='#E5E9F0')
-    #         self.lateral_plot.draw()
+            self.somatotipo_plot.draw()
 
     #         self.data_ap_max = results['ap_max']
     #         self.data_ap_t_max = results['ap_t_max']
