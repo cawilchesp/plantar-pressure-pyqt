@@ -10,6 +10,7 @@ from PyQt6.QtCore import QSettings, Qt
 
 import sys
 import pandas as pd
+import matplotlib
 import matplotlib.pyplot as plt
 from pathlib import Path
 
@@ -1112,101 +1113,67 @@ class App(QWidget):
         if selected_left_foot_file and selected_right_foot_file:
             self.default_path = self.settings.setValue('default_path', str(Path(selected_left_foot_file).parent))
 
-            extracted_image = backend.extract(selected_left_foot_file, selected_right_foot_file)
+            extracted_image, analysis_results = backend.extract(selected_left_foot_file, selected_right_foot_file)
+            left_y = analysis_results['left_peak_pos'][0]
+            left_x = analysis_results['left_peak_pos'][1]
 
+            left_cop_x = analysis_results['left_cop'][0]
+            left_cop_y = analysis_results['left_cop'][1]
+            right_cop_x = analysis_results['right_cop'][0]
+            right_cop_y = analysis_results['right_cop'][1]
+            global_cop_x = analysis_results['global_cop'][0]
+            global_cop_y = analysis_results['global_cop'][1]
 
-
-    #         results = backend.analisis(df)
+            total_pressure = analysis_results['total_pressure']
+            left_pressure = analysis_results['left_pressure']
+            left_pressure_perc = analysis_results['left_pressure_perc']
+            right_pressure = analysis_results['right_pressure']
+            right_pressure_perc = analysis_results['right_pressure_perc']
+            forefoot_pressure = analysis_results['forefoot_pressure']
+            forefoot_pressure_perc = analysis_results['forefoot_pressure_perc']
+            rearfoot_pressure = analysis_results['rearfoot_pressure']
+            rearfoot_pressure_perc = analysis_results['rearfoot_pressure_perc']
             
-    #         # ----------------
-    #         # Gráficas Señales
-    #         # ----------------
-    #         data_lat = results['data_x']
-    #         data_ap = results['data_y']
-    #         data_t = results['data_t']
-
-    #         self.data_lat_max = results['lat_max']
-    #         self.data_lat_t_max = results['lat_t_max']
-    #         self.data_lat_min = results['lat_min']
-    #         self.data_lat_t_min = results['lat_t_min']
-
+            # ----------------
+            # Gráficas Señales
+            # ----------------
             self.somatotipo_plot.axes.cla()
             self.somatotipo_plot.fig.subplots_adjust(left=0.05, bottom=0.15, right=1, top=0.95, wspace=0, hspace=0)
-            self.somatotipo_plot.axes.imshow(extracted_image, cmap=plt.get_cmap('jet'))
-    #         self.lateral_plot.axes.plot(data_t, data_lat, '#42A4F5')
-    #         self.lateral_plot.axes.plot(self.data_lat_t_max, self.data_lat_max, marker="o", markersize=3, markeredgecolor='#FF2D55', markerfacecolor='#FF2D55')
-    #         self.lateral_plot.axes.plot(self.data_lat_t_min, self.data_lat_min, marker="o", markersize=3, markeredgecolor='#FF2D55', markerfacecolor='#FF2D55')
-    #         if self.theme_value:
-    #             self.lat_text_1 = self.lateral_plot.axes.text(self.data_lat_t_max, self.data_lat_max, f'{self.data_lat_max:.2f}', color='#000000')
-    #             self.lat_text_2 = self.lateral_plot.axes.text(self.data_lat_t_min, self.data_lat_min, f'{self.data_lat_min:.2f}', color='#000000')
-    #         else:
-    #             self.lat_text_1 = self.lateral_plot.axes.text(self.data_lat_t_max, self.data_lat_max, f'{self.data_lat_max:.2f}', color='#E5E9F0')
-    #             self.lat_text_2 = self.lateral_plot.axes.text(self.data_lat_t_min, self.data_lat_min, f'{self.data_lat_min:.2f}', color='#E5E9F0')
+            cmap = matplotlib.cm.get_cmap("jet").copy()
+            cmap.set_under('w')
+            self.somatotipo_plot.axes.imshow(extracted_image, cmap=cmap)
+            self.somatotipo_plot.axes.plot(left_x, left_y, marker="o", markersize=3, markeredgecolor='#FF2D55', markerfacecolor='#FF2D55')
+            self.somatotipo_plot.axes.plot(left_cop_x, left_cop_y, marker="o", markersize=3, markeredgecolor='#FFFFFF', markerfacecolor='#FFFFFF')
+            self.somatotipo_plot.axes.plot(right_cop_x, right_cop_y, marker="o", markersize=3, markeredgecolor='#FFFFFF', markerfacecolor='#FFFFFF')
+            self.somatotipo_plot.axes.plot(global_cop_x, global_cop_y, marker="o", markersize=3, markeredgecolor='#FFFFFF', markerfacecolor='#FFFFFF')
+        
+            # if self.theme_value:
+            self.lat_text_1 = self.somatotipo_plot.axes.text(0, 25, f'{left_pressure_perc:.2f}%', color='#FFFFFF')
+            self.lat_text_2 = self.somatotipo_plot.axes.text(43, 25, f'{right_pressure_perc:.2f}%', color='#FFFFFF')
+            self.lat_text_1 = self.somatotipo_plot.axes.text(23, 2, f'{forefoot_pressure_perc:.2f}%', color='#FFFFFF')
+            self.lat_text_2 = self.somatotipo_plot.axes.text(23, 46, f'{rearfoot_pressure_perc:.2f}%', color='#FFFFFF')
+            # else:
+            #     self.lat_text_1 = self.lateral_plot.axes.text(self.data_lat_t_max, self.data_lat_max, f'{self.data_lat_max:.2f}', color='#E5E9F0')
+            #     self.lat_text_2 = self.lateral_plot.axes.text(self.data_lat_t_min, self.data_lat_min, f'{self.data_lat_min:.2f}', color='#E5E9F0')
             self.somatotipo_plot.draw()
 
-    #         self.data_ap_max = results['ap_max']
-    #         self.data_ap_t_max = results['ap_t_max']
-    #         self.data_ap_min = results['ap_min']
-    #         self.data_ap_t_min = results['ap_t_min']
+            # --------------------------
+            # Presentación de resultados
+            # --------------------------
+            self.presion_total_value.setText(f'{total_pressure}')
+            self.presion_total_percent.setText(f'100%')
+            
+            self.presion_left_value.setText(f'{left_pressure}')
+            self.presion_left_percent.setText(f'{left_pressure_perc:.2f}%')
+            self.presion_right_value.setText(f'{right_pressure}')
+            self.presion_right_percent.setText(f'{right_pressure_perc:.2f}%')
 
-    #         self.antePost_plot.axes.cla()
-    #         self.antePost_plot.fig.subplots_adjust(left=0.05, bottom=0.15, right=1, top=0.95, wspace=0, hspace=0)
-    #         self.antePost_plot.axes.plot(data_t, data_ap, '#42A4F5')
-    #         self.antePost_plot.axes.plot(self.data_ap_t_max, self.data_ap_max, marker="o", markersize=3, markeredgecolor='#FF2D55', markerfacecolor='#FF2D55')
-    #         self.antePost_plot.axes.plot(self.data_ap_t_min, self.data_ap_min, marker="o", markersize=3, markeredgecolor='#FF2D55', markerfacecolor='#FF2D55')
-    #         if self.theme_value:
-    #             self.ap_text_1 = self.antePost_plot.axes.text(self.data_ap_t_max, self.data_ap_max, f'{self.data_ap_max:.2f}', color='#000000')
-    #             self.ap_text_2 = self.antePost_plot.axes.text(self.data_ap_t_min, self.data_ap_min, f'{self.data_ap_min:.2f}', color='#000000')
-    #         else:
-    #             self.ap_text_1 = self.antePost_plot.axes.text(self.data_ap_t_max, self.data_ap_max, f'{self.data_ap_max:.2f}', color='#E5E9F0')
-    #             self.ap_text_2 = self.antePost_plot.axes.text(self.data_ap_t_min, self.data_ap_min, f'{self.data_ap_min:.2f}', color='#E5E9F0')
-    #         self.antePost_plot.draw()
+            self.presion_antepie_value.setText(f'{forefoot_pressure}')
+            self.presion_antepie_percent.setText(f'{forefoot_pressure_perc:.2f}%')
+            self.presion_retropie_value.setText(f'{rearfoot_pressure}')
+            self.presion_retropie_percent.setText(f'{rearfoot_pressure_perc:.2f}%')
 
-    #         # --------------
-    #         # Gráficas Áreas
-    #         # --------------
-    #         data_elipse = backend.ellipseStandard(df)
-    #         self.elipse_plot.axes.cla()
-    #         self.elipse_plot.fig.subplots_adjust(left=0.1, bottom=0.1, right=1, top=0.95, wspace=0, hspace=0)
-    #         self.elipse_plot.axes.scatter(data_lat, data_ap, marker='.', color='#42A4F5')
-    #         self.elipse_plot.axes.plot(data_elipse['x'], data_elipse['y'], '#FF2D55')
-    #         self.elipse_plot.axes.axis('equal')
-    #         self.elipse_plot.draw()
 
-    #         data_convex = backend.convexHull(df)
-    #         self.hull_plot.axes.cla()
-    #         self.hull_plot.fig.subplots_adjust(left=0.1, bottom=0.1, right=1, top=0.95, wspace=0, hspace=0)
-    #         self.hull_plot.axes.scatter(data_lat, data_ap, marker='.', color='#42A4F5')
-    #         self.hull_plot.axes.fill(data_convex['x'], data_convex['y'], edgecolor='#FF2D55', fill=False, linewidth=2)
-    #         self.hull_plot.axes.axis('equal')
-    #         self.hull_plot.draw()
-
-    #         data_pca = backend.ellipsePCA(df)
-    #         self.pca_plot.axes.cla()
-    #         self.pca_plot.fig.subplots_adjust(left=0.1, bottom=0.1, right=1, top=0.95, wspace=0, hspace=0)
-    #         self.pca_plot.axes.scatter(data_lat, data_ap, marker='.', color='#42A4F5')
-    #         self.pca_plot.axes.plot(data_pca['x'], data_pca['y'], '#FF2D55')
-    #         self.pca_plot.axes.axis('equal')
-    #         self.pca_plot.draw()
-
-    #         # --------------------------
-    #         # Presentación de resultados
-    #         # --------------------------
-    #         self.lat_rango_value.setText(f'{results["lat_rango"]:.2f}')
-    #         self.lat_vel_value.setText(f'{results["lat_vel"]:.2f}')
-    #         self.lat_rms_value.setText(f'{results["lat_rms"]:.2f}')
-
-    #         self.ap_rango_value.setText(f'{results["ap_rango"]:.2f}')
-    #         self.ap_vel_value.setText(f'{results["ap_vel"]:.2f}')
-    #         self.ap_rms_value.setText(f'{results["ap_rms"]:.2f}')
-
-    #         self.cop_vel_value.setText(f'{results["centro_vel"]:.2f}')
-    #         self.distancia_value.setText(f'{results["centro_dist"]:.2f}')
-    #         self.frecuencia_value.setText(f'{results["centro_frec"]:.2f}')
-
-    #         self.elipse_value.setText(f'{data_elipse["area"]:.2f}')
-    #         self.hull_value.setText(f'{data_convex["area"]:.2f}')
-    #         self.pca_value.setText(f'{data_pca["area"]:.2f}')
 
     #         # -------------
     #         # Base de datos
