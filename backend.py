@@ -17,6 +17,7 @@ import sys
 import numpy as np
 import pandas as pd
 import psycopg2
+import cv2
 
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
@@ -82,28 +83,50 @@ def extract(left_image_file: str, right_image_file: str) -> dict:
     signals: dict
         Lateral and antero-posterior signal data by feet
     """
+    left_mdata = {}
+    with open(left_image_file) as f:
+        lines = f.readlines()
+        left_row = int(lines[19].split('=')[1]) - 1
+        left_col = int(lines[20].split('=')[1]) - 1
+        left_height = int(lines[21].split('=')[1])
+        left_width = int(lines[22].split('=')[1])
+    left_mdata['row'] = left_row
+    left_mdata['col'] = left_col
+    left_mdata['height'] = left_height
+    left_mdata['width'] = left_width
+
+    right_mdata = {}
+    with open(right_image_file) as f:
+        lines = f.readlines()
+        right_row = int(lines[19].split('=')[1]) - 1
+        right_col = int(lines[20].split('=')[1]) - 1
+        right_height = int(lines[21].split('=')[1])
+        right_width = int(lines[22].split('=')[1])
+    right_mdata['row'] = right_row
+    right_mdata['col'] = right_col
+    right_mdata['height'] = right_height
+    right_mdata['width'] = right_width
+
     left_df = pd.read_csv(left_image_file, sep='\t', skiprows=27, header=None, encoding='ISO-8859-1')
     right_df = pd.read_csv(right_image_file, sep='\t', skiprows=27, header=None, encoding='ISO-8859-1')
 
-    pressure = np.zeros((48,48)) - 1
-    pressure[14:39,6:17] = np.array(left_df) * 10
-    pressure[14:39,33:44] = np.array(right_df) * 10
-    pressure = np.nan_to_num(pressure,False,-1)
+    left_df = np.array(left_df)
+    left_df = np.nan_to_num(left_df,False,-1.0)
 
-    print(pd.DataFrame(pressure))
+    right_df = np.array(right_df)
+    right_df = np.nan_to_num(right_df,False,-1.0)
+
+    pressure = np.zeros((48,48)) - 10
+    pressure[left_row:left_row+left_height , left_col:left_col+left_width+1] = left_df * 10
+    pressure[right_row:right_row+right_height , right_col:right_col+right_width+1] = right_df * 10
+    
+
+    results = analisis(left_df, right_df, pressure, left_mdata, right_mdata)
 
     # # OCR
     # image_left_limits = image.copy()
     # image_left_limits = image_left_limits[ 144:315 , 108:513]
     # left_ap_limits,left_lat_limits = image_ocr(image_left_limits)
-
-    # image_center_limits = image.copy()
-    # image_center_limits = image_center_limits[ 144:315 , 529:934]
-    # center_ap_limits,center_lat_limits = image_ocr(image_center_limits)
-
-    # image_right_limits = image.copy()
-    # image_right_limits = image_right_limits[ 144:315 , 949:1354]
-    # right_ap_limits,right_lat_limits = image_ocr(image_right_limits)
 
   
     # signals = {
@@ -111,25 +134,31 @@ def extract(left_image_file: str, right_image_file: str) -> dict:
     #     'left_lateral_time': left_lateral_time,
     #     'center_lateral_signal': center_lateral_signal,
     #     'center_lateral_time': center_lateral_time,
-    #     'right_lateral_signal': right_lateral_signal,
-    #     'right_lateral_time': right_lateral_time,
-    #     'left_ap_signal': left_ap_signal,
-    #     'left_ap_time': left_ap_time,
-    #     'center_ap_signal': center_ap_signal,
-    #     'center_ap_time': center_ap_time,
-    #     'right_ap_signal': right_ap_signal,
-    #     'right_ap_time': right_ap_time
     #     }
 
-    return pressure
-
-
+    return pressure, results
 
 
 # ---------------------------
 # Funciones Análisis de Datos
 # ---------------------------
-def analisis(df: pd.DataFrame) -> dict:
+def center_pressure(image):
+    image[image<0] = 0.0
+    i  = np.nonzero(image)
+    res = np.vstack([i, image[i]])
+    
+    pressure_y = res[0] - 0.5
+    pressure_x = res[1] - 0.5
+    pressure_values = res[2]
+
+    den = np.sum(pressure_values)
+    cop_x = sum(pressure_values * pressure_x) / den
+    cop_y = sum(pressure_values * pressure_y) / den
+
+    return (cop_x, cop_y)
+
+
+def analisis(left_df: np.array, right_df: np.array, pressure: np.array, left_mdata: dict, right_mdata: dict) -> dict:
     """ Analysis of anthropometric measurements
 
     Parameters
@@ -158,70 +187,59 @@ def analisis(df: pd.DataFrame) -> dict:
             Lateral signal correspondent time value for minimum value
         
     """
-    # results = {}
+    results = {}
 
-    # data_x = df.iloc[:,0]
-    # data_y = df.iloc[:,1]
-    # data_t = np.linspace(0, len(df) / 10, len(df))
+    left_cop = center_pressure(left_df)
+    right_cop = center_pressure(right_df)
+    global_cop = center_pressure(pressure)
 
-    # results['data_x'] = data_x
-    # results['data_y'] = data_y
-    # results['data_t'] = data_t
+    results['left_cop'] = (left_cop[0] + left_mdata['col'] , left_cop[1] + left_mdata['row'])
+    results['right_cop'] = (right_cop[0] + right_mdata['col'] , right_cop[1] + right_mdata['row'])
+    results['global_cop'] = (global_cop[0] , global_cop[1])
 
-    # x_max = data_x.max()
-    # x_min = data_x.min()
-    # y_max = data_y.max()
-    # y_min = data_y.min()
-
-    # results['lat_max'] = x_max
-    # results['lat_t_max'] = data_x.idxmax() / 10
-    # results['lat_min'] = x_min
-    # results['lat_t_min'] = data_x.idxmin() / 10
-
-    # results['ap_max'] = y_max
-    # results['ap_t_max'] = data_y.idxmax() / 10
-    # results['ap_min'] = y_min
-    # results['ap_t_min'] = data_y.idxmin() / 10
-
-    # results['lat_rango'] = x_max - x_min
-    # results['ap_rango'] = y_max - y_min
-
-    # tAnalisis = len(df) / 10
-    # time_analysis = len(df) - 1
-    # den = tAnalisis / len(df)
-
-    # # SEÑAL X ----------------------------------------------------------------
-    # avgX = data_x.sum() / len(df)
-
-    # numX = abs(data_x.diff()).dropna()
-    # velSgnX = numX / den
-    # results['lat_vel'] = velSgnX.sum() / time_analysis
-
-    # numRMSX = (data_x - avgX) * (data_x - avgX)
-    # results['lat_rms'] = np.sqrt(numRMSX.sum() / time_analysis)
+    Q1 = pressure[ 0:int(global_cop[1])  , 0:int(global_cop[0]) ]
+    Q2 = pressure[ int(global_cop[1]):47 , 0:int(global_cop[0]) ]
+    Q3 = pressure[ 0:int(global_cop[1])  , int(global_cop[0]):47 ]
+    Q4 = pressure[ int(global_cop[1]):47 , int(global_cop[0]):47 ]
     
-    # # SEÑAL Y ----------------------------------------------------------------
-    # avgY = data_y.sum() / len(df)
+    total_pressure = np.sum(pressure)
+    pressure_Q1 = np.sum(Q1)
+    pressure_Q2 = np.sum(Q2)
+    pressure_Q3 = np.sum(Q3)
+    pressure_Q4 = np.sum(Q4)
 
-    # numY = abs(data_y.diff()).dropna()
-    # velSgnY = numY / den
-    # results['ap_vel'] = velSgnY.sum() / time_analysis
+    results['total_pressure'] = total_pressure
+    results['pressure_Q1'] = pressure_Q1
+    results['pressure_Q2'] = pressure_Q2
+    results['pressure_Q3'] = pressure_Q3
+    results['pressure_Q4'] = pressure_Q4
 
-    # numRMSY = (data_y - avgY) * (data_y - avgY)
-    # results['ap_rms'] = np.sqrt(numRMSY.sum() / time_analysis)
+    results['left_pressure'] = pressure_Q1 + pressure_Q2
+    results['left_pressure_perc'] = (pressure_Q1 + pressure_Q2) * 100 / total_pressure
+    results['right_pressure'] = pressure_Q3 + pressure_Q4
+    results['right_pressure_perc'] = (pressure_Q3 + pressure_Q4) * 100 / total_pressure
+    results['forefoot_pressure'] = pressure_Q1 + pressure_Q3
+    results['forefoot_pressure_perc'] = (pressure_Q1 + pressure_Q3) * 100 / total_pressure
+    results['rearfoot_pressure'] = pressure_Q2 + pressure_Q4
+    results['rearfoot_pressure_perc'] = (pressure_Q2 + pressure_Q4) * 100 / total_pressure
+    
+    
+    
+    
 
-    # # SEÑALES X Y ------------------------------------------------------------
-    # num2 = np.sqrt((numX * numX) + (numY * numY))
-    # numVMT = num2 / tAnalisis
-    # results['centro_vel'] = numVMT.sum()
 
-    # numDist = np.sqrt((data_x * data_x) + (data_y * data_y))
-    # distM = numDist / tAnalisis
 
-    # results['centro_dist'] = distM.sum()
-    # results['centro_frec'] = numVMT.sum() / (2 * np.pi)
 
-    # return results
+    left_max = left_df.max().max()
+    left_peak_pos = np.unravel_index(left_df.argmax(), left_df.shape)
+    
+    results['left_max'] = left_max
+    results['left_peak_pos'] = (left_peak_pos[0] + left_mdata['row'], left_peak_pos[1] + left_mdata['col'])
+    
+
+    
+
+    return results
 
 
 # -----------------------
